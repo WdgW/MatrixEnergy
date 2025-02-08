@@ -22,8 +22,8 @@ jobs:
     - name: Upload built jar file
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ github.event.repository.name }}
-        path: lib/build/libs/${{ github.event.repository.name }}.
+        name: lib
+        path: lib/build/libs/
     
   buildGenesis:
     runs-on: ubuntu-latest
@@ -44,5 +44,5 @@ jobs:
     - name: Upload built jar file
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ github.event.repository.name }}
-        path: genesis/build/libs/${{ github.event.repository.name }}.jar
+        name: genesis
+        path: genesis/build/libs/
