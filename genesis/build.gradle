@@ -41,7 +41,7 @@ jar{
     }
 
     from(projectDir){
-        include "mod.hjson" // 如果 mod.hjson 已经移动到 lib 目录下，这里需要更新路径
+        include "genesis/mod.hjson" // 如果 mod.hjson 已经移动到 lib 目录下，这里需要更新路径
     }
 
     from("assets/genesis/"){
