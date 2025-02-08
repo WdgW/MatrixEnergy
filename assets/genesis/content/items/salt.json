@@ -1,0 +1,10 @@
+{
+    "type": "MEItem",
+    "name": "salt",
+    "hardness": 2,
+    "flammability": 0,
+    "explosiveness": 0,
+    "radioactivity": 0,
+    "charge": 0,
+    "buildable": false
+}

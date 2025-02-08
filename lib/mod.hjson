@@ -1,8 +1,8 @@
-displayName: "矩阵能源"
+displayName: "矩阵能源前置"
 name: "MatrixEnergy"
 author: "龙晶, 晶化者, dg"
 main: "matrix_energy.MELib"
-description: "矩阵能源含前置"
+description: "矩阵能源前置"
 version: 0.0.1
 minGameVersion: 146
 java: true

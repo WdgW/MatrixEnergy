@@ -1,0 +1,8 @@
+displayName: "矩阵能源-起源"
+name: "MatrixEnergyGenesis"
+author: "龙晶, 晶化者, dg"
+main: "matrix_energy.MEGenesis"
+description: "矩阵能源起源"
+version: 0.0.1
+minGameVersion: 146
+java: true

@@ -1,0 +1,16 @@
+{
+  "type": "MELiquid",
+  "name": "saltWater",
+  "flammability": 0.0,
+  "explosiveness": 0.0,
+  "heatCapacity": 0.5,
+  "viscosity": 0.5,
+  "temperature": 0.5,
+  "research": "salt",
+  "coolant": true,
+  "alwaysUnlocked": true,
+  "particleSpacing": 60.0,
+  "boilPoint": 2.0,
+  "capPuddles": true,
+  "hidden": false
+}

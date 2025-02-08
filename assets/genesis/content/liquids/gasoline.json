@@ -1,0 +1,17 @@
+{
+  "type": "MELiquid",
+  "name": "gasoline",
+  "flammability": 0.8,
+  "explosiveness": 0.7,
+  "heatCapacity": 0.3,
+  "viscosity": 0.3,
+  "temperature": 0.6,
+  "research": "petroleum",
+  "coolant": false,
+  "alwaysUnlocked": false,
+  "particleSpacing": 60.0,
+  "boilPoint": 2.0,
+  "capPuddles": true,
+  "hidden": false,
+  "canStayOn": []
+}

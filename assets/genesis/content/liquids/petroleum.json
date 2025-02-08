@@ -1,0 +1,17 @@
+{
+  "type": "MELiquid",
+  "name": "petroleum",,
+  "flammability": 0.3,
+  "explosiveness": 0.1,
+  "heatCapacity": 0.6,
+  "viscosity": 0.4,
+  "temperature": 0.5,
+  "research": "原油",
+  "coolant": false,
+  "alwaysUnlocked": false,
+  "particleSpacing": 60.0,
+  "boilPoint": 2.0,
+  "capPuddles": true,
+  "hidden": false,
+  "canStayOn": ["water"]
+}

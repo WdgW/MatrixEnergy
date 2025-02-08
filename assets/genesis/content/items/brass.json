@@ -1,0 +1,10 @@
+{
+    "type": "MEItem",
+    "name": "brass",
+    "hardness": 6,
+    "flammability": 0,
+    "explosiveness": 0,
+    "radioactivity": 0,
+    "charge": 0,
+    "buildable": true
+}
