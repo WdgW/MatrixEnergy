@@ -1,3 +1,5 @@
+build.gradle
+library/build.gradle
 bin/
 .classpath
 .project
