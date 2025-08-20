@@ -1,20 +1,12 @@
 version '0.0.1'
 
-sourceSets {
-    main {
-        java {
-            srcDirs "src"
-        }
-    }
-}
+sourceSets.main.java.srcDirs = ["src"]
 
 ext {
     modName = ModName + "Library"
     deployFileName = modName + "-" + version+ ".jar"
     desktopJarPath = layout.buildDirectory.get().toString() + "/libs/" + modName + "Desktop.jar"
     androidJarPath = layout.buildDirectory.get().toString() + "/libs/" + modName + "Android.jar"
-
-//    println "modName: $modName; deployFileName: $deployFileName; desktopJarPath: $desktopJarPath; androidJarPath: $androidJarPath"
 }
 
 
@@ -71,50 +63,5 @@ tasks.register('deploy', Jar) {
     doLast {
         // 删除临时jar文件
         delete desktopJarPath, androidJarPath
-    }
-}
-
-tasks.register("runBatchScript", Exec) {
-    workingDir 'W:\\game'
-    commandLine 'W:\\game\\mindustry.bat'
-}
-
-tasks.register("cleanGameMode") {
-    delete "$mindustryDataDir/mods/${deployFileName}"
-}
-
-tasks.register("copyToGameDir"){
-    dependsOn deploy
-    dependsOn cleanGameMode
-
-    println "copyToGameDir running"
-
-    doLast {
-        copy{
-            from("${layout.buildDirectory.get()}/libs/${deployFileName}")
-            into("$mindustryDataDir/mods")
-        }
-    }
-}
-
-tasks.register("playGame") {
-    dependsOn jar
-
-    println "buildDir: ${layout.buildDirectory.get()}; version: $version"
-
-    doFirst {
-        delete "$mindustryDataDir/mods/${deployFileName}"
-    }
-
-    doLast {
-        copy {
-            from("${layout.buildDirectory.get()}/libs/${deployFileName}")
-            into("$mindustryDataDir/mods")
-        }
-
-        exec {
-            workingDir 'W:\\game'
-            commandLine 'W:\\game\\mindustry.bat'
-        }
     }
 }
