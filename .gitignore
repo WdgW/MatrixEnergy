@@ -1,6 +1,7 @@
 build.gradle
 library/build.gradle
 genesis/build.gradle
+
 bin/
 .classpath
 .project
