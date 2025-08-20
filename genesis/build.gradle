@@ -1,22 +1,13 @@
 version '0.0.1'
 
-sourceSets {
-    main {
-        java {
-            srcDirs "src"
-        }
-    }
-}
+sourceSets.main.java.srcDirs = ["src"]
+
 ext {
     modName = ModName + "Genesis"
     deployFileName = modName + "-" + version+ ".jar"
     desktopJarPath = layout.buildDirectory.get().toString() + "/libs/" + modName + "Desktop.jar"
     androidJarPath = layout.buildDirectory.get().toString() + "/libs/" + modName + "Android.jar"
 }
-
-//dependencies{
-//    implementation project(':library')
-//}
 
 tasks.register('jarAndroid') {
     dependsOn jar
@@ -69,44 +60,4 @@ tasks.register('deploy', Jar) {
         delete desktopJarPath, androidJarPath
     }
 }
-
-tasks.register("runBatchScript", Exec) {
-    workingDir 'W:\\game'
-    commandLine 'W:\\game\\mindustry.bat'
-}
-
-tasks.register("cleanGameMode") {
-    delete "$mindustryDataDir/mods/${modName}Desktop.jar"
-}
-
-tasks.register("copyToGameDir"){
-    dependsOn deploy
-    dependsOn cleanGameMode
-
-    copy{
-        from("${layout.buildDirectory.get()}/libs/${deployFileName}")
-        into("$mindustryDataDir/mods")
-    }
-}
-
-tasks.register("playGame") {
-    dependsOn jar
-
-    println "buildDir: ${layout.buildDirectory.get()}; version: $version"
-
-    doFirst {
-        delete "$mindustryDataDir/mods/${modName}Desktop.jar"
-    }
-
-    doLast {
-        copy {
-            from("${layout.buildDirectory.get()}/libs/${modName}Desktop.jar")
-            into("$mindustryDataDir/mods")
-        }
-
-        exec {
-            workingDir 'W:\\game'
-            commandLine 'W:\\game\\mindustry.bat'
-        }
-    }
 }
