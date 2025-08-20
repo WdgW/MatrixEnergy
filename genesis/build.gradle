@@ -60,4 +60,3 @@ tasks.register('deploy', Jar) {
         delete desktopJarPath, androidJarPath
     }
 }
-}
