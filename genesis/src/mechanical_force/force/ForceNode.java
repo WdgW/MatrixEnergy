@@ -37,7 +37,7 @@ public class ForceNode extends Block implements ForceBlock {
 
         public ForceNodeBuild() {
             super();
-            if (block instanceof ForceBlock forceBlock && forceBlock.hasForce && force == null) {
+            if (block instanceof ForceBlock && force == null) {
                 force = new ForceModule();
             }
         }

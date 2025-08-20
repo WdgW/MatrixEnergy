@@ -1,21 +1,28 @@
 version '0.0.1'
 
-sourceSets.main.java.srcDirs = ["src"] // 修改源代码目录
-ext.modName = ModName + "Genesis"
-
-dependencies{
-    implementation project(':lib')
-
-    compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
-    compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
-
-    annotationProcessor "com.github.Anuken:jabel:$jabelVersion"
+sourceSets {
+    main {
+        java {
+            srcDirs "src"
+        }
+    }
+}
+ext {
+    modName = ModName + "Genesis"
+    deployFileName = modName + "-" + version+ ".jar"
+    desktopJarPath = layout.buildDirectory.get().toString() + "/libs/" + modName + "Desktop.jar"
+    androidJarPath = layout.buildDirectory.get().toString() + "/libs/" + modName + "Android.jar"
 }
 
+//dependencies{
+//    implementation project(':library')
+//}
+
 tasks.register('jarAndroid') {
-    dependsOn "jar"
+    dependsOn jar
 
     doLast {
+        println("sdlRoot: ${sdkRoot}")
         if (!sdkRoot || !new File(sdkRoot).exists()) throw new GradleException("No valid Android SDK found. Ensure that ANDROID_HOME is set to your Android SDK directory.")
 
         def platformRoot = new File("$sdkRoot/platforms/").listFiles().sort().reverse().find { f -> new File(f, "android.jar").exists() }
@@ -29,7 +36,7 @@ tasks.register('jarAndroid') {
 
         //dex and desugar files - this requires d8 in your PATH
         "$d8 $dependencies --min-api 14 --output ${modName}Android.jar ${modName}Desktop.jar"
-                .execute(null, new File("$buildDir/libs")).waitForProcessOutput(System.out, System.err)
+                .execute(null, new File("${layout.buildDirectory.get()}/libs")).waitForProcessOutput(System.out, System.err)
     }
 }
 
@@ -41,27 +48,25 @@ jar{
     }
 
     from(projectDir){
-        include "genesis/mod.hjson" // 如果 mod.hjson 已经移动到 lib 目录下，这里需要更新路径
+        include "mod.hjson"
     }
 
-    from("assets/genesis/"){
+    from("./assets"){
         include "**"
     }
-
 }
 
 tasks.register('deploy', Jar) {
     dependsOn jarAndroid
     dependsOn jar
-    archiveFileName = "${modName}-${version}.jar"
+    archiveFileName = deployFileName
 
-    from { [zipTree("$buildDir/libs/${modName}Desktop.jar"), zipTree("$buildDir/libs/${modName}Android.jar")] }
+    from {
+        [zipTree(desktopJarPath), zipTree(androidJarPath)]
+    }
 
     doLast {
-        delete {
-            delete "$buildDir/libs/${modName}Desktop.jar"
-            delete "$buildDir/libs/${modName}Android.jar"
-        }
+        delete desktopJarPath, androidJarPath
     }
 }
 
@@ -74,9 +79,12 @@ tasks.register("cleanGameMode") {
     delete "$mindustryDataDir/mods/${modName}Desktop.jar"
 }
 
-tasks.register("copyToGame"){
+tasks.register("copyToGameDir"){
+    dependsOn deploy
+    dependsOn cleanGameMode
+
     copy{
-        from("$buildDir/libs/${modName}Desktop.jar")
+        from("${layout.buildDirectory.get()}/libs/${deployFileName}")
         into("$mindustryDataDir/mods")
     }
 }
@@ -84,7 +92,7 @@ tasks.register("copyToGame"){
 tasks.register("playGame") {
     dependsOn jar
 
-    println "buildDir: $buildDir; version: $version"
+    println "buildDir: ${layout.buildDirectory.get()}; version: $version"
 
     doFirst {
         delete "$mindustryDataDir/mods/${modName}Desktop.jar"
@@ -92,7 +100,7 @@ tasks.register("playGame") {
 
     doLast {
         copy {
-            from("$buildDir/libs/${modName}Desktop.jar")
+            from("${layout.buildDirectory.get()}/libs/${modName}Desktop.jar")
             into("$mindustryDataDir/mods")
         }
 

@@ -13,8 +13,7 @@ public class MFItems {
             sulfide, blackPowder, carbonFiber, glass
             ;
 
-    /*
-
+    /**
      * ((20240725154244-ri31nrz "淀粉"))
      * ((20240725154309-5rkz0lw "塑钢"))
      * ((20240725154331-gk9v045 "沙子"))

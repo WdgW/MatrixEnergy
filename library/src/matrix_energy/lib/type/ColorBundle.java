@@ -1,4 +1,4 @@
-package matrix_energy.type;
+package matrix_energy.lib.type;
 
 import arc.Core;
 import arc.graphics.Color;

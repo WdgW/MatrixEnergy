@@ -8,7 +8,6 @@ import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
 import mindustry.type.Category;
-import mindustry.type.Planet;
 import mindustry.world.Block;
 import mindustry.world.blocks.production.Drill;
 
@@ -59,13 +58,10 @@ public class EmasculateBlocks {
 
             @Override
             public boolean isVisible() {
-                return !isHidden() && (state.rules.editor || (!state.rules.hideBannedBlocks || !state.rules.isBanned(this)));
+                return state.rules.planet == MFPlanets.earth && super.isVisible();
             }
 
-            @Override
-            public boolean isVisibleOn(Planet planet) {
-                return planet == MFPlanets.earth && super.isVisibleOn(planet);
-            }
+
 
             @Override
             public void loadIcon() {

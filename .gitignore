@@ -1,7 +1,6 @@
-bin
+bin/
 .classpath
 .project
-.idea/
 logs/
 /core/assets/mindustry-saves/
 /core/assets/mindustry-maps/
@@ -24,7 +23,6 @@ logs/
 /tests/build/
 /server/build/
 /test_files/
-/annotations/build/
 /desktop-sdl/build/
 desktop-sdl/build/
 /android/assets/mindustry-maps/
@@ -79,8 +77,6 @@ com_crashlytics_export_strings.xml
 
 ## Eclipse
 
-.classpath
-.project
 .metadata/
 /android/bin/
 /core/bin/
@@ -146,14 +142,7 @@ nb-configuration.xml
 
 /local.properties
 .gradle/
-gradle-app.setting
-/build/
-/android/build/
-/core/build/
-/desktop/build/
-/html/build/
-/ios/build/
-/ios-moe/build/
+gradle-app.settin
 
 ## OS Specific
 .DS_Store

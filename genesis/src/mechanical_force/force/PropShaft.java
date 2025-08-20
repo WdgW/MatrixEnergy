@@ -28,6 +28,7 @@ import static mindustry.Vars.world;
 /**
  * @author dg
  */
+@SuppressWarnings("PatternVariableCanBeUsed")
 public class PropShaft extends Block implements ForceBlock {
     /**
      * 为保持精度采用字符串形式
@@ -237,27 +238,33 @@ public class PropShaft extends Block implements ForceBlock {
         if (build.isTransverse) {
             return () -> {
                 PropShaftBuild oFirst = null, oLast = null;
-                for (int i = build.block().size * tilesize; i < world.width(); i += build.block().size * tilesize) {
+                for (int i = build.block.size * tilesize; i < world.width(); i += build.block.size * tilesize) {
                     Building other = world.buildWorld(build.x + i, build.y);
-                    if (other instanceof PropShaftBuild o && o.force != null && o.isTransverse) {
-                        o.setFirst(null);
-                        o.setLast(null);
+                    if (other instanceof PropShaftBuild ) {
+                        PropShaftBuild o = (PropShaftBuild) other;
+                        if (o.force != null && o.isTransverse){
+                            o.setFirst(null);
+                            o.setLast(null);
+                        }
                     }
                     else {
-                        PropShaftBuild it = (PropShaftBuild) world.buildWorld(build.x + i - build.block().size * tilesize, build.y);
+                        PropShaftBuild it = (PropShaftBuild) world.buildWorld(build.x + i - build.block.size * tilesize, build.y);
                         it.setLast(it);
                         oLast = it;
                         break;
                     }
                 }
-                for (int i = build.block().size * tilesize; i < world.width(); i += build.block().size * tilesize) {
+                for (int i = build.block.size * tilesize; i < world.width(); i += build.block.size * tilesize) {
                     Building other = world.buildWorld(build.x - i, build.y);
-                    if (other instanceof PropShaftBuild o && o.force != null && o.isTransverse) {
-                        o.setFirst(null);
-                        o.setLast(null);
+                    if (other instanceof PropShaftBuild) {
+                        PropShaftBuild o = (PropShaftBuild) other;
+                        if (o.force != null && o.isTransverse) {
+                            o.setFirst(null);
+                            o.setLast(null);
+                        }
                     }
                     else {
-                        PropShaftBuild it = (PropShaftBuild) world.buildWorld(build.x - i + build.block().size * tilesize, build.y);
+                        PropShaftBuild it = (PropShaftBuild) world.buildWorld(build.x - i + build.block.size * tilesize, build.y);
                         it.setFirst(it);
                         oFirst = it;
                         break;
@@ -272,27 +279,33 @@ public class PropShaft extends Block implements ForceBlock {
         else {
             return () -> {
                 PropShaftBuild oFirst = null, oLast = null;
-                for (int i = build.block().size * tilesize; i < world.height(); i += build.block().size * tilesize) {
+                for (int i = build.block.size * tilesize; i < world.height(); i += build.block.size * tilesize) {
                     Building other = world.buildWorld(build.x, build.y + i);
-                    if (other instanceof PropShaftBuild o && o.force != null && !o.isTransverse) {
-                        o.setFirst(null);
-                        o.setLast(null);
+                    if (other instanceof PropShaftBuild) {
+                        PropShaftBuild o = (PropShaftBuild) other;
+                        if (o.force != null && o.isTransverse) {
+                            o.setFirst(null);
+                            o.setLast(null);
+                        }
                     }
                     else {
-                        PropShaftBuild it = (PropShaftBuild) world.buildWorld(build.x, build.y + i - build.block().size * tilesize);
+                        PropShaftBuild it = (PropShaftBuild) world.buildWorld(build.x, build.y + i - build.block.size * tilesize);
                         it.setLast(it);
                         oLast = it;
                         break;
                     }
                 }
-                for (int i = build.block().size * tilesize; i < world.height(); i += build.block().size * tilesize) {
+                for (int i = build.block.size * tilesize; i < world.height(); i += build.block.size * tilesize) {
                     Building other = world.buildWorld(build.x, build.y - i);
-                    if (other instanceof PropShaftBuild o && o.force != null && !o.isTransverse) {
-                        o.setFirst(null);
-                        o.setLast(null);
+                    if (other instanceof PropShaftBuild) {
+                        PropShaftBuild o = (PropShaftBuild) other;
+                        if (o.force != null && o.isTransverse) {
+                            o.setFirst(null);
+                            o.setLast(null);
+                        }
                     }
                     else {
-                        PropShaftBuild it = (PropShaftBuild) world.buildWorld(build.x, build.y - i + build.block().size * tilesize);
+                        PropShaftBuild it = (PropShaftBuild) world.buildWorld(build.x, build.y - i + build.block.size * tilesize);
                         it.setFirst(it);
                         oFirst = it;
                         break;
@@ -318,7 +331,7 @@ public class PropShaft extends Block implements ForceBlock {
 
         public PropShaftBuild() {
             super();
-            if (block instanceof ForceBlock forceBlock && forceBlock.hasForce && force == null) {
+            if (block instanceof ForceBlock && force == null) {
                 force = new ForceModule();
             }
             forceLinks.add(this);
@@ -332,10 +345,10 @@ public class PropShaft extends Block implements ForceBlock {
             first = propShaftBuild;
         }        @Override
         public Building create(Block block, Team team) {
-            if (!(block instanceof ForceBlock b)) return super.create(block, team);
-            if (b.hasForce) {
-                force = new ForceModule();
+            if (!(block instanceof ForceBlock )) {
+                return super.create(block, team);
             }
+            force = new ForceModule();
 //            Log.info(rotation);
             isTransverse = rotation % 4 == 0 || rotation % 4 == 2;
 //            if (force.selfForce.size)
@@ -361,33 +374,39 @@ public class PropShaft extends Block implements ForceBlock {
             super.placed();
             PropShaftBuild oFirst = null, oLast = null;
             if (isTransverse) {
-                for (int i = this.block().size * tilesize; i < world.width(); i += this.block().size * tilesize) {
+                for (int i = this.block.size * tilesize; i < world.width(); i += this.block.size * tilesize) {
                     Building other = world.buildWorld(x + i, y);
-                    if (other instanceof PropShaftBuild o && o.force != null && o.isTransverse) {
-                        o.setFirst(null);
-                        o.setLast(null);
-                        if (this.rotation != o.rotation) {
-                            this.rotation = o.rotation;
+                    if (other instanceof PropShaftBuild) {
+                        PropShaftBuild o = (PropShaftBuild) other;
+                        if (o.force != null && o.isTransverse) {
+                            o.setFirst(null);
+                            o.setLast(null);
+                            if (this.rotation != o.rotation) {
+                                this.rotation = o.rotation;
+                            }
                         }
                     }
                     else {
-                        PropShaftBuild it = (PropShaftBuild) world.buildWorld(x + i - this.block().size * tilesize, y);
+                        PropShaftBuild it = (PropShaftBuild) world.buildWorld(x + i - this.block.size * tilesize, y);
                         it.setLast(it);
                         oLast = it;
                         break;
                     }
                 }
-                for (int i = this.block().size * tilesize; i < world.width(); i += this.block().size * tilesize) {
+                for (int i = this.block.size * tilesize; i < world.width(); i += this.block.size * tilesize) {
                     Building other = world.buildWorld(x - i, y);
-                    if (other instanceof PropShaftBuild o && o.force != null && o.isTransverse) {
-                        o.setFirst(null);
-                        o.setLast(null);
-                        if (this.rotation != o.rotation) {
-                            this.rotation = o.rotation;
+                    if (other instanceof PropShaftBuild) {
+                        PropShaftBuild o = (PropShaftBuild) other;
+                        if (o.force != null && o.isTransverse) {
+                            o.setFirst(null);
+                            o.setLast(null);
+                            if (this.rotation != o.rotation) {
+                                this.rotation = o.rotation;
+                            }
                         }
                     }
                     else {
-                        PropShaftBuild it = (PropShaftBuild) world.buildWorld(x - i + this.block().size * tilesize, y);
+                        PropShaftBuild it = (PropShaftBuild) world.buildWorld(x - i + this.block.size * tilesize, y);
                         it.setFirst(it);
                         oFirst = it;
                         break;
@@ -395,33 +414,39 @@ public class PropShaft extends Block implements ForceBlock {
                 }
             }
             else {
-                for (int i = this.block().size * tilesize; i < world.height(); i += this.block().size * tilesize) {
+                for (int i = this.block.size * tilesize; i < world.height(); i += this.block.size * tilesize) {
                     Building other = world.buildWorld(x, y + i);
-                    if (other instanceof PropShaftBuild o && o.force != null && !o.isTransverse) {
-                        o.setFirst(null);
-                        o.setLast(null);
-                        if (this.rotation != o.rotation) {
-                            this.rotation = o.rotation;
+                    if (other instanceof PropShaftBuild) {
+                        PropShaftBuild o = (PropShaftBuild) other;
+                        if (o.force != null && o.isTransverse) {
+                            o.setFirst(null);
+                            o.setLast(null);
+                            if (this.rotation != o.rotation) {
+                                this.rotation = o.rotation;
+                            }
                         }
                     }
                     else {
-                        PropShaftBuild it = (PropShaftBuild) world.buildWorld(x, y + i - this.block().size * tilesize);
+                        PropShaftBuild it = (PropShaftBuild) world.buildWorld(x, y + i - this.block.size * tilesize);
                         it.setLast(it);
                         oLast = it;
                         break;
                     }
                 }
-                for (int i = this.block().size * tilesize; i < world.height(); i += this.block().size * tilesize) {
+                for (int i = this.block.size * tilesize; i < world.height(); i += this.block.size * tilesize) {
                     Building other = world.buildWorld(x, y - i);
-                    if (other instanceof PropShaftBuild o && o.force != null && !o.isTransverse) {
-                        o.setFirst(null);
-                        o.setLast(null);
-                        if (this.rotation != o.rotation) {
-                            this.rotation = o.rotation;
+                    if (other instanceof PropShaftBuild) {
+                        PropShaftBuild o = (PropShaftBuild) other;
+                        if (o.force != null && o.isTransverse) {
+                            o.setFirst(null);
+                            o.setLast(null);
+                            if (this.rotation != o.rotation) {
+                                this.rotation = o.rotation;
+                            }
                         }
                     }
                     else {
-                        PropShaftBuild it = (PropShaftBuild) world.buildWorld(x, y - i + this.block().size * tilesize);
+                        PropShaftBuild it = (PropShaftBuild) world.buildWorld(x, y - i + this.block.size * tilesize);
                         it.setFirst(it);
                         oFirst = it;
                         break;
@@ -439,22 +464,34 @@ public class PropShaft extends Block implements ForceBlock {
             super.remove();
             if (isTransverse) {
                 Building otherRight = world.buildWorld(x + block.size * tilesize, y);
-                if (otherRight instanceof PropShaftBuild o && o.force != null && o.isTransverse) {
-                    o.setFirst(o);
+                if (otherRight instanceof PropShaftBuild) {
+                    PropShaftBuild o = (PropShaftBuild) otherRight;
+                    if ( o.force != null && o.isTransverse) {
+                        o.setFirst(o);
+                    }
                 }
                 Building otherLeft = world.buildWorld(x - block.size * tilesize, y);
-                if (otherLeft instanceof PropShaftBuild o && o.force != null && o.isTransverse) {
-                    o.setLast(o);
+                if (otherLeft instanceof PropShaftBuild) {
+                    PropShaftBuild o = (PropShaftBuild) otherLeft;
+                    if ( o.force != null && o.isTransverse) {
+                        o.setLast(o);
+                    }
                 }
             }
             else {
                 Building otherRight = world.buildWorld(x, y + block.size * tilesize);
-                if (otherRight instanceof PropShaftBuild o && o.force != null && o.isTransverse) {
-                    o.setFirst(o);
+                if (otherRight instanceof PropShaftBuild) {
+                    PropShaftBuild o = (PropShaftBuild) otherRight;
+                    if ( o.force != null && o.isTransverse) {
+                        o.setFirst(o);
+                    }
                 }
                 Building otherLeft = world.buildWorld(x, y - block.size * tilesize);
-                if (otherLeft instanceof PropShaftBuild o && o.force != null && o.isTransverse) {
-                    o.setLast(o);
+                if (otherLeft instanceof PropShaftBuild) {
+                    PropShaftBuild o = (PropShaftBuild) otherLeft;
+                    if ( o.force != null && o.isTransverse) {
+                        o.setLast(o);
+                    }
                 }
             }
         }
@@ -486,7 +523,9 @@ public class PropShaft extends Block implements ForceBlock {
         @Override
         public void write(Writes write) {
             super.write(write);
-            if (force == null && !(block instanceof ForceBlock) && !((ForceBlock) block).hasForce) return;
+            if (force == null && !(block instanceof ForceBlock) && !ForceBlock.hasForce) {
+                return;
+            }
             assert force != null;
             force.write(write);
             write.f(first.x);
@@ -499,11 +538,5 @@ public class PropShaft extends Block implements ForceBlock {
         public byte version() {
             return 1;
         }
-
-        @Override
-        public PropShaft block() {
-            return (PropShaft) this.block;
-        }
-
     }
 }

@@ -140,10 +140,12 @@ public class MechanicalForce extends Mod {
 
     public void unlockTechnologies() {
         for (Seq<Content> contents : Vars.content.getContentMap()) {
-            if (contents.size == 0) continue;
+            if (contents.size == 0) {
+                continue;
+            }
             for (Content content : contents) {
-                if (content instanceof UnlockableContent u) {
-                    u.unlock();
+                if (content instanceof UnlockableContent ) {
+                    ((UnlockableContent)content).unlock();
                 }
             }
         }

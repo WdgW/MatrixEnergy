@@ -1,8 +1,8 @@
-package matrix_energy.type;
-
-import static matrix_energy.type.ColorBundle.getColorFormBundle;
+package matrix_energy.lib.type;
 
 import mindustry.type.Liquid;
+
+import static matrix_energy.lib.type.ColorBundle.getColorFormBundle;
 
 /**
  * @author DG
