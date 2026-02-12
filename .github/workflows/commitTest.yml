@@ -19,7 +19,7 @@ jobs:
       run: |
         chmod +x ./gradlew
         ./gradlew :lib:deploy
-        ./gradlew :genesis:deploy
+        #./gradlew :genesis:deploy
     - name: Upload lib built jar file
       uses: actions/upload-artifact@v4
       with:
