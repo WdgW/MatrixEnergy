@@ -1,4 +1,4 @@
-package mechanical_force.force;
+package matrix_energy.genesis.force;
 
 import arc.graphics.g2d.Draw;
 import arc.math.Mathf;
@@ -28,7 +28,7 @@ public class ForceConveyor extends Conveyor implements ForceBlock {
     public static final int[] blendresult = new int[5];
     public float itemSpace = 0.4f;
 
-//    public TextureRegion[] regions;
+    //    public TextureRegion[] regions;
     public int capacity = 3;
     public float speed = 0f;
     public float displayedSpeed = 0f;
@@ -87,6 +87,7 @@ public class ForceConveyor extends Conveyor implements ForceBlock {
 
         //添加最大所需扭矩
     }
+
     /**
      * @return 一个混合值的数组：
      *         [0]：连接的类型：
@@ -193,11 +194,6 @@ public class ForceConveyor extends Conveyor implements ForceBlock {
         public ForceConveyorBuild() {
             super();
             force = new ForceModule();
-        }
-
-        @Override
-        public byte version() {
-            return 2;
         }
 
         @Override
@@ -389,6 +385,11 @@ public class ForceConveyor extends Conveyor implements ForceBlock {
                 ys[mid] = 0.5f;
                 ids[mid] = item;
             }
+        }
+
+        @Override
+        public byte version() {
+            return 2;
         }
 
         @Override

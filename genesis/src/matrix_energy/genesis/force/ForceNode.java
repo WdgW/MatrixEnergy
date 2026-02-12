@@ -1,4 +1,4 @@
-package mechanical_force.force;
+package matrix_energy.genesis.force;
 
 import mindustry.gen.Building;
 import mindustry.world.Block;
@@ -8,28 +8,27 @@ import mindustry.world.Block;
  */
 public class ForceNode extends Block implements ForceBlock {
 
-    public ForceNode(String name) {
-        super(name);
-        buildType = ForceNodeBuild::new;
-    }
-
     public ForceNode(String name, String localizedName) {
         this(name);
         this.localizedName = localizedName;
     }
 
+    public ForceNode(String name) {
+        super(name);
+        buildType = ForceNodeBuild::new;
+    }
 
     @Override
-    public void setStats(){
+    public void setStats() {
         super.setStats();
 //        stats.add(Stat.powerRange, range, StatUnit.blocks);
     }
+
     @Override
-    public void init(){
+    public void init() {
         super.init();
 //        updateClipRadius((range + 1) * tilesize);
     }
-    
 
 
     public class ForceNodeBuild extends Building implements ForceBuild {

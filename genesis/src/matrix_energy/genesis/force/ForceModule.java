@@ -1,4 +1,4 @@
-package mechanical_force.force;
+package matrix_energy.genesis.force;
 
 import arc.util.io.Reads;
 import arc.util.io.Writes;
@@ -14,6 +14,7 @@ public class ForceModule extends BlockModule {
     public Force resultantForce = new Force();
     /** 自身产生的力(动力 - 阻力) */
     public Force selfForce = new Force();
+
     public ForceModule() {
     }
 

@@ -1,4 +1,4 @@
-package mechanical_force.force;
+package matrix_energy.genesis.force;
 
 /**
  * @author dg

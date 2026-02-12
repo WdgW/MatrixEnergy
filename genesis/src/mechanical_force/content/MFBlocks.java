@@ -4,8 +4,8 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
 import arc.util.Time;
-import mechanical_force.force.ForceConveyor;
-import mechanical_force.force.PropShaft;
+import matrix_energy.genesis.force.ForceConveyor;
+import matrix_energy.genesis.force.PropShaft;
 import mechanical_force.world.blocks.CoreShare;
 import mechanical_force.world.blocks.environment.MPOreBlock;
 import mindustry.Vars;
@@ -31,8 +31,7 @@ public class MFBlocks {
             //forceBlock
             propShaft,
     //ore
-    oreCoal, oreIron, oreCopper, oreGold, oreLeadZinc, oreNickel, oreTin, share, transmit
-            ,forceConveyor;
+    oreCoal, oreIron, oreCopper, oreGold, oreLeadZinc, oreNickel, oreTin, share, transmit, forceConveyor;
 
     public static void load() {
         oreCoal = new MPOreBlock(MFItems.coal);
@@ -59,6 +58,7 @@ public class MFBlocks {
         };
         transmit = new Unloader("transmit") {
             public final int range;
+
             {
                 this.update = true;
                 this.hasItems = true;
@@ -86,28 +86,30 @@ public class MFBlocks {
                                 core.items.remove(sortItem, 1);
                                 items.add(sortItem, 1);
                             }
-                            Fx.itemTransfer.at(team.core().x,team.core().y,3,sortItem.color,this);
+                            Fx.itemTransfer.at(team.core().x, team.core().y, 3, sortItem.color, this);
                         }
-                        Vars.indexer.eachBlock(this, range, o -> o.acceptItem(this, sortItem) && o.items != null || !(o instanceof CoreBuild), other -> {
-                            if (items.get(sortItem) > 0 && other.acceptItem(this, sortItem) && !(other instanceof ConveyorBuild) && other.items != null && other.items.length() >= sortItem.id + 1) {
-                                if ((other.getMaximumAccepted(sortItem) - other.items.get(sortItem)) >= items.get(sortItem)) {
-                                    int a = items.get(sortItem);
-                                    items.remove(sortItem, a);
-                                    other.handleStack(sortItem,a,this);
+                        Vars.indexer.eachBlock(
+                                this, range, o -> o.acceptItem(this, sortItem) && o.items != null || !(o instanceof CoreBuild), other -> {
+                                    if (items.get(sortItem) > 0 && other.acceptItem(this, sortItem) && !(other instanceof ConveyorBuild) && other.items != null && other.items.length() >= sortItem.id + 1) {
+                                        if ((other.getMaximumAccepted(sortItem) - other.items.get(sortItem)) >= items.get(sortItem)) {
+                                            int a = items.get(sortItem);
+                                            items.remove(sortItem, a);
+                                            other.handleStack(sortItem, a, this);
+                                        }
+                                        else {
+                                            int a = other.getMaximumAccepted(sortItem) - other.items.get(sortItem);
+                                            items.remove(sortItem, a);
+                                            other.handleStack(sortItem, a, this);
+                                        }
+                                        Fx.itemTransfer.at(x, y, 2, sortItem.color, other);
+                                        Draw.reset();
+                                        Draw.color(sortItem.color);
+                                        Lines.square(other.x, other.y, (float) (other.block.size * Vars.tilesize) / 2 + 1, 45);
+                                        Draw.flush();
+                                        Draw.reset();
+                                    }
                                 }
-                                else {
-                                    int a = other.getMaximumAccepted(sortItem) - other.items.get(sortItem);
-                                    items.remove(sortItem, a);
-                                    other.handleStack(sortItem,a,this);
-                                }
-                                Fx.itemTransfer.at(x,y,2,sortItem.color,other);
-                                Draw.reset();
-                                Draw.color(sortItem.color);
-                                Lines.square(other.x, other.y, (float) (other.block.size * Vars.tilesize) / 2 + 1, 45);
-                                Draw.flush();
-                                Draw.reset();
-                            }
-                        });
+                                              );
                     }
 
                     @Override
@@ -127,15 +129,12 @@ public class MFBlocks {
                         if (sortItem == null) return;
                         Draw.color(sortItem.color);
                         Draw.alpha(0.05f * Time.time);
-                        Lines.square(x,y, 8 * Mathf.sin(0.025f*Time.time), 45);
-                    
-                };
-            };
-            }
+                        Lines.square(x, y, 8 * Mathf.sin(0.025f * Time.time), 45);
 
-            @Override
-            public boolean outputsItems() {
-                return false;
+                    }
+
+                    ;
+                };
             }
 
             @Override
@@ -148,10 +147,15 @@ public class MFBlocks {
             @Override
             public void drawPlace(int x, int y, int rotation, boolean valid) {
                 super.drawPlace(x, y, rotation, valid);
-                Drawf.dashCircle(x * Vars.tilesize +this.offset, y * Vars.tilesize + this.offset, range, Pal.accent);
+                Drawf.dashCircle(x * Vars.tilesize + this.offset, y * Vars.tilesize + this.offset, range, Pal.accent);
+            }
+
+            @Override
+            public boolean outputsItems() {
+                return false;
             }
         };
-        forceConveyor = new ForceConveyor("forceConveyor"){{
+        forceConveyor = new ForceConveyor("forceConveyor") {{
             localizedName = "动力传送带";
             speed = 0.03f;
             requirements(Category.distribution, ItemStack.with(MFItems.iron, 100));

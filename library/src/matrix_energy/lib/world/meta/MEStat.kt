@@ -1,14 +1,12 @@
-package matrix_energy.lib.world.meta;
+package matrix_energy.lib.world.meta
 
-import mindustry.world.meta.Stat;
-import mindustry.world.meta.StatCat;
+import mindustry.world.meta.Stat
+import mindustry.world.meta.StatCat
 
 /**
  * @author dg
  */
-public class MEStat {
-    public static final Stat
-
-    //item
-    ingredients = new Stat("ingredients", StatCat.items);
+object MEStat {
+    val ingredients: Stat = Stat("ingredients", StatCat.items)
+    val composition: Stat = Stat("composition", StatCat.items)
 }

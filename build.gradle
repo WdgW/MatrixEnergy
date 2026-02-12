@@ -1,22 +1,36 @@
-version = "0.0.1"
+version = "0.1.0-dev"
 
-allprojects{
+buildscript {
+    repositories {
+        maven {
+            url 'https://maven.aliyun.com/repository/gradle-plugin'
+        }
+        mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
 
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+subprojects {
     apply plugin: "java"
+    apply plugin: "kotlin"
 
-    ext{
-        ModName = "MatrixEnergy"
+    sourceSets.main {
+        kotlin.srcDirs = ["src"]
+    }
 
-        mindustryVersion = 'v149'
-//        jabelVersion = "93fde537c7"
-
-        mindustryDataDir = "C:\\Users\\Administrator\\AppData\\Roaming\\Mindustry"
-
+    ext {
         //windows sucks
         isWindows = System.getProperty("os.name").toLowerCase().contains("windows")
         sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
     }
-    repositories{
+
+    repositories {
         mavenCentral()
 
         // 使用阿里云公共仓库
@@ -24,25 +38,28 @@ allprojects{
         // 使用阿里云 Google 仓库
         maven { url 'https://maven.aliyun.com/repository/google' }
 
-        maven{ url "https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository" }
-        maven{ url 'https://www.jitpack.io' }
+        maven { url "https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository" }
+        maven { url 'https://www.jitpack.io' }
     }
-    dependencies{
-//        compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
-//        compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
-//
-//        annotationProcessor "com.github.Anuken:jabel:$jabelVersion"
-        compileOnly fileTree(dir: 'W:/test/ME/mindustry/jar', include: 'Mindustry-BE-Desktop-26178.jar')
+
+    dependencies {
+        compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
+        compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
+        annotationProcessor "com.github.Anuken:jabel:$jabelVersion"
+//        compileOnly fileTree(dir: 'W:/test/ME/mindustry/jar', include: 'Mindustry-BE-Desktop-26426.jar')
 //        compileOnly fileTree(dir: 'W:/test/ME/mindustry/src/Mindustry-149/core/src/mindustry', include: '**/*.java')
 
-//        compileOnly files('W:/test/ME/mindustry/src/Mindustry-149')
-//        compileOnly files('W:/test/ME/mindustry/src/Arc-149')
-//        compileOnly files('W:/test/ME/mindustry/src/jabel-0.9.0')
     }
 
-    java{
+    java {
         targetCompatibility = 8
         sourceCompatibility = JavaVersion.VERSION_21
+    }
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = "1.8" // 目标版本
+        }
     }
 
     tasks.withType(JavaCompile).tap {
@@ -56,10 +73,11 @@ allprojects{
 //force arc version
 configurations.configureEach {
     resolutionStrategy.eachDependency { details ->
-        if(details.requested.group == 'com.github.Anuken.Arc'){
+        if (details.requested.group == 'com.github.Anuken.Arc') {
             details.useVersion "$mindustryVersion"
         }
     }
+
 }
 
 //TODO: 总项目构建脚本

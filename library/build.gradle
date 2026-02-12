@@ -1,22 +1,19 @@
-version '0.0.1'
+version '0.1.0-dev'
 
-sourceSets {
-    main {
-        java {
-            srcDirs "src"
-        }
-    }
-}
+sourceSets.main.java.srcDirs = ["src"]
 
 ext {
-    modName = ModName + "Library"
-    deployFileName = modName + "-" + version+ ".jar"
-    desktopJarPath = layout.buildDirectory.get().toString() + "/libs/" + modName + "Desktop.jar"
-    androidJarPath = layout.buildDirectory.get().toString() + "/libs/" + modName + "Android.jar"
+    deployFileName = modNameL + "-" + version + ".jar"
+    desktopJarPath = layout.buildDirectory.get().toString() + "/libs/" + modNameL + "Desktop.jar"
+    androidJarPath = layout.buildDirectory.get().toString() + "/libs/" + modNameL + "Android.jar"
 
-//    println "modName: $modName; deployFileName: $deployFileName; desktopJarPath: $desktopJarPath; androidJarPath: $androidJarPath"
+//    println "modNameL: $modNameL; deployFileName: $deployFileName; desktopJarPath: $desktopJarPath; androidJarPath: $androidJarPath"
 }
 
+dependencies {
+    implementation 'com.esotericsoftware:kryo:5.6.0'
+    implementation 'org.objenesis:objenesis:3.3'
+}
 
 tasks.register('jarAndroid') {
     dependsOn jar
@@ -34,23 +31,23 @@ tasks.register('jarAndroid') {
         def d8 = isWindows ? "d8.bat" : "d8"
 
         //dex and desugar files - this requires d8 in your PATH
-        "$d8 $dependencies --min-api 14 --output ${modName}Android.jar ${modName}Desktop.jar"
+        "$d8 $dependencies --min-api 14 --output ${modNameL}Android.jar ${modNameL}Desktop.jar"
                 .execute(null, new File("${layout.buildDirectory.get()}/libs")).waitForProcessOutput(System.out, System.err)
     }
 }
 
-jar{
-    archiveFileName = "${modName}Desktop.jar"
+jar {
+    archiveFileName = "${modNameL}Desktop.jar"
 
-    from{
-        configurations.runtimeClasspath.collect{ it.isDirectory() ? it : zipTree(it) }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 
-    from(projectDir){
+    from(projectDir) {
         include "mod.hjson"
     }
 
-    from("./assets"){
+    from("../assets/library") {
         include "**"
     }
 
@@ -64,7 +61,7 @@ tasks.register('deploy', Jar) {
 
     archiveFileName = deployFileName
 
-    from { 
+    from {
         [zipTree(desktopJarPath), zipTree(androidJarPath)]
     }
 
@@ -83,14 +80,14 @@ tasks.register("cleanGameMode") {
     delete "$mindustryDataDir/mods/${deployFileName}"
 }
 
-tasks.register("copyToGameDir"){
+tasks.register("copyToGameDir") {
     dependsOn deploy
     dependsOn cleanGameMode
 
     println "copyToGameDir running"
 
     doLast {
-        copy{
+        copy {
             from("${layout.buildDirectory.get()}/libs/${deployFileName}")
             into("$mindustryDataDir/mods")
         }

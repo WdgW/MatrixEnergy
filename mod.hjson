@@ -3,6 +3,6 @@ name: "MatrixEnergy"
 author: "龙晶, 晶化者, dg"
 main: "matrix_energy.Main"
 description: "矩阵能源完整版"
-version: 0.0.1
-minGameVersion: 146
+version: 0.1.0
+minGameVersion: 155
 java: true

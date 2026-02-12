@@ -1,17 +1,11 @@
-version '0.0.1'
+version '0.0.1-beta'
 
-sourceSets {
-    main {
-        java {
-            srcDirs "src"
-        }
-    }
-}
+sourceSets.main.java.srcDirs = ["src"]
+
 ext {
-    modName = ModName + "Genesis"
-    deployFileName = modName + "-" + version+ ".jar"
-    desktopJarPath = layout.buildDirectory.get().toString() + "/libs/" + modName + "Desktop.jar"
-    androidJarPath = layout.buildDirectory.get().toString() + "/libs/" + modName + "Android.jar"
+    deployFileName = modNameG + "-" + version + ".jar"
+    desktopJarPath = layout.buildDirectory.get().toString() + "/libs/" + modNameG + "Desktop.jar"
+    androidJarPath = layout.buildDirectory.get().toString() + "/libs/" + modNameG + "Android.jar"
 }
 
 //dependencies{
@@ -35,23 +29,23 @@ tasks.register('jarAndroid') {
         def d8 = isWindows ? "d8.bat" : "d8"
 
         //dex and desugar files - this requires d8 in your PATH
-        "$d8 $dependencies --min-api 14 --output ${modName}Android.jar ${modName}Desktop.jar"
+        "$d8 $dependencies --min-api 14 --output ${modNameG}Android.jar ${modNameG}Desktop.jar"
                 .execute(null, new File("${layout.buildDirectory.get()}/libs")).waitForProcessOutput(System.out, System.err)
     }
 }
 
-jar{
-    archiveFileName = "${modName}Desktop.jar"
+jar {
+    archiveFileName = "${modNameG}Desktop.jar"
 
-    from{
-        configurations.runtimeClasspath.collect{ it.isDirectory() ? it : zipTree(it) }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 
-    from(projectDir){
+    from(projectDir) {
         include "mod.hjson"
     }
 
-    from("./assets"){
+    from("./assets") {
         include "**"
     }
 }
@@ -76,14 +70,14 @@ tasks.register("runBatchScript", Exec) {
 }
 
 tasks.register("cleanGameMode") {
-    delete "$mindustryDataDir/mods/${modName}Desktop.jar"
+    delete "$mindustryDataDir/mods/${modNameG}Desktop.jar"
 }
 
-tasks.register("copyToGameDir"){
+tasks.register("copyToGameDir") {
     dependsOn deploy
     dependsOn cleanGameMode
 
-    copy{
+    copy {
         from("${layout.buildDirectory.get()}/libs/${deployFileName}")
         into("$mindustryDataDir/mods")
     }
@@ -95,12 +89,12 @@ tasks.register("playGame") {
     println "buildDir: ${layout.buildDirectory.get()}; version: $version"
 
     doFirst {
-        delete "$mindustryDataDir/mods/${modName}Desktop.jar"
+        delete "$mindustryDataDir/mods/${modNameG}Desktop.jar"
     }
 
     doLast {
         copy {
-            from("${layout.buildDirectory.get()}/libs/${modName}Desktop.jar")
+            from("${layout.buildDirectory.get()}/libs/${modNameG}Desktop.jar")
             into("$mindustryDataDir/mods")
         }
 

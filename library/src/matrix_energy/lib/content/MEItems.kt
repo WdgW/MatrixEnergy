@@ -1,52 +1,138 @@
-package matrix_energy.lib.content;
+package matrix_energy.lib.content
 
-import arc.graphics.Color;
-import matrix_energy.lib.type.MEItem;
-import matrix_energy.lib.type.MultiItem;
-import mindustry.content.Items;
-import mindustry.type.ItemStack;
+import arc.graphics.Color
+import arc.struct.Seq
+import matrix_energy.lib.type.item.CompositeItem
+import matrix_energy.lib.type.item.MEItem
+import matrix_energy.lib.type.item.PureSubstanceItem
+import mindustry.content.Items
+import mindustry.type.Item
 
 /**
  * @author dg
  */
+object MEItems {
 
-@SuppressWarnings("ALL")
-public class MEItems {
-    public static MEItem
-            coal, iron,lead, copper, gold, leadZinc, nickel, tin, starch, plastic, sand, saltpeter,
-            sulfide, blackPowder, carbonFiber, glass, aluminium
-            ;
+    @JvmField
+    var coal: MEItem? = null
+    @JvmField
+    var Fe: PureSubstanceItem? = null
+    @JvmField
+    var Fe2O3: PureSubstanceItem? = null
+    @JvmField
+    var Si: PureSubstanceItem? = null
+    @JvmField
+    var SiO2: PureSubstanceItem? = null
+    @JvmField
+    var Al: PureSubstanceItem? = null
+    @JvmField
+    var Al2O3: PureSubstanceItem? = null
+    @JvmField
+    var lead: MEItem? = null
+    @JvmField
+    var copper: MEItem? = null
+    @JvmField
+    var gold: PureSubstanceItem? = null
+    @JvmField
+    var leadZinc: MEItem? = null
+    @JvmField
+    var nickel: PureSubstanceItem? = null
+    @JvmField
+    var tin: PureSubstanceItem? = null
+    @JvmField
+    var starch: PureSubstanceItem? = null
+    @JvmField
+    var plastic: MEItem? = null
+    @JvmField
+    var sand: MEItem? = null
+    @JvmField
+    var saltpeter: MEItem? = null
+    @JvmField
+    var sulfide: MEItem? = null
+    @JvmField
+    var blackPowder: MEItem? = null
+    @JvmField
+    var carbonFiber: MEItem? = null
+    @JvmField
+    var glass: MEItem? = null
 
-    /**
-     * 表示矿石的多物品实例，可用于将多个物品或数量组合在单一物品表示下。
-     */
-    public static MultiItem ironOreItems;
-    @SuppressWarnings("AlibabaAvoidCommentBehindStatement")
-    public static void load() {
-        coal = new MEItem("coal", new Color(0, 0, 0), "煤", Items.coal);
-        copper = new MEItem("copper", new Color(255, 140, 0), "铜",Items.copper);     //Cu
-        iron = new MEItem("iron", new Color(192, 192, 192), "铁");                    //Fe
-        lead = new MEItem("lead", Color.valueOf("2s4mwjw"), "铅", Items.lead);            //Pb
-        gold = new MEItem("gold", new Color(255, 215, 0), "金");                      //Au
-        leadZinc = new MEItem("lead-zinc", new Color(165, 165, 165), "铅锌");
-        nickel = new MEItem("nickel", new Color(185, 185, 185), "镍");                //Ni
-        tin = new MEItem("tin", new Color(220, 220, 220), "锡");                      //Sn
-        starch = new MEItem("starch", Color.valueOf("ri31nrz"), "淀粉");
-        plastic = new MEItem("plastic", Color.valueOf("5rkz0lw"), "塑钢");
-        sand = new MEItem("sand", Color.valueOf("gk9v045"), "沙子",Items.sand);
-        saltpeter = new MEItem("saltpeter", Color.valueOf("rovf956"), "火硝");
-        sulfide = new MEItem("sulfide", Color.valueOf("oxhg1ut"), "硫化物", Items.pyratite);
-        blackPowder = new MEItem("blackPowder", Color.valueOf("7cqb1if"), "黑火药");
-        carbonFiber = new MEItem("carbonFiber", Color.valueOf("to9pp4p"), "碳纤维");
-        glass = new MEItem("glass", Color.valueOf("d0fx0oi"), "玻璃",Items.metaglass);
-        aluminium = new MEItem("aluminium", Color.valueOf("e0e0e0"), "铝");               //Al
+    //10% 25% 50% 75% 99%
+    @JvmField
+    var ironOreItem10: CompositeItem? = null
+    @JvmField
+    var ironOreItem25: CompositeItem? = null
+    @JvmField
+    var ironOreItem50: CompositeItem? = null
+    @JvmField
+    var ironOreItem75: CompositeItem? = null
+    @JvmField
+    var ironOreItem99: CompositeItem? = null
+    @JvmField
+    val duplicateItems: Seq<MEItem> = Seq.with(coal, copper, lead, sand, sulfide, glass)
+
+
+//    fun MEItem.loadItemIcon(item: Item): MEItem {
+//        Events.on(EventType.ContentInitEvent::class.java) {
+//            item.let {
+//                Log.info(item)
+//                item.loadIcon()
+//                fullIcon = item.fullIcon
+//                uiIcon = item.uiIcon
+//            }
+//        }
+//        return this
+//
+//    }
+
+    class _MEItem(
+        name: String,
+        color: Color = Color.black.cpy(),
+        localizedName: String = name,
+        item: Item? = null
+    ) : MEItem(name, color, localizedName) {
+        var item: Item? = item
+        override fun loadIcon() {
+            super.loadIcon()
+            item?.let {
+                fullIcon = it.fullIcon
+                uiIcon = it.uiIcon
+            }
+
+        }
+
+    }
+
+    @JvmStatic
+    fun load() {
+        coal = _MEItem("coal", Color(0f, 0f, 0f), "煤", Items.coal)
+        copper = _MEItem("copper", Color(255f, 140f, 0f), "铜", Items.copper) //Cu
+        lead = _MEItem("lead", Color.valueOf("2s4mwjw"), "铅", Items.lead) //Pb
+        glass = _MEItem("glass", Color.valueOf("d0fx0oi"), "玻璃", Items.metaglass)
+        sand = _MEItem("sand", Color.valueOf("gk9v045"), "沙子", Items.sand)
+        sulfide = _MEItem("sulfide", Color.valueOf("oxhg1ut"), "硫化物", Items.pyratite)
+        Fe = PureSubstanceItem("iron", Color(192f, 192f, 192f), "铁") //
+        Fe2O3 = PureSubstanceItem("iron-oxide", Color(255f, 0f, 0f), "氧化铁") //Fe2O3
+        Si = PureSubstanceItem("silicon", Color(255f, 255f, 255f), "硅") //Si
+        SiO2 = PureSubstanceItem("silicon-dioxide", Color(255f, 255f, 255f), "二氧化硅") //SiO2
+        gold = PureSubstanceItem("gold", Color(255f, 215f, 0f), "金") //Au
+        leadZinc = MEItem("lead-zinc", Color(165f, 165f, 165f), "铅锌")
+        nickel = PureSubstanceItem("nickel", Color(185f, 185f, 185f), "镍") //Ni
+        tin = PureSubstanceItem("tin", Color(220f, 220f, 220f), "锡") //Sn
+        starch = PureSubstanceItem("starch", Color.valueOf("ri31nrz"), "淀粉")
+        Al = PureSubstanceItem("aluminium", Color.valueOf("e0e0e0"), "铝") //Al
+        Al2O3 = PureSubstanceItem("aluminium-oxide", Color.valueOf("e0e0e0"), "氧化铝") //Al2O3
+        plastic = MEItem("plastic", Color.valueOf("5rkz0lw"), "塑钢")
+        saltpeter = MEItem("saltpeter", Color.valueOf("rovf956"), "火硝")
+        blackPowder = MEItem("blackPowder", Color.valueOf("7cqb1if"), "黑火药")
+        carbonFiber = MEItem("carbonFiber", Color.valueOf("to9pp4p"), "碳纤维")
 
 
         //多物品
-        ironOreItems = new MultiItem("iron-ore", Color.red, "赤铁矿", ItemStack.list(iron, 1, aluminium, 1)){
-            {
-                description = "赤铁矿";
-            }
-        };
+        ironOreItem10 = CompositeItem("iron-ore-10", Seq.with(Fe2O3, 1, SiO2, 6, Al2O3, 3), Color.red, "赤铁矿")
+        ironOreItem25 = CompositeItem("iron-ore-25", Seq.with(Fe2O3, 1, SiO2, 2, Al2O3, 1), Color.red, "赤铁矿")
+        ironOreItem50 = CompositeItem("iron-ore-50", Seq.with(Fe2O3, 2, SiO2, 1, Al2O3, 1), Color.red, "赤铁矿")
+        ironOreItem75 = CompositeItem("iron-ore-75", Seq.with(Fe2O3, 6, SiO2, 1, Al2O3, 1), Color.red, "赤铁矿")
+        ironOreItem99 = CompositeItem("iron-ore-99", Seq.with(Fe2O3, 99, SiO2, 1), Color.red, "赤铁矿")
+
     }
 }

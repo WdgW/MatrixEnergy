@@ -1,4 +1,4 @@
-package mechanical_force.force;
+package matrix_energy.genesis.force;
 
 import arc.util.io.Reads;
 import arc.util.io.Writes;
@@ -9,26 +9,30 @@ import java.math.BigDecimal;
  * @author dg
  */
 public class Force {
-    /** 力的大小 力的正负表示方向 <br>使用BigDecimal确保数值精确*/
+    /** 力的大小 力的正负表示方向 <br>使用BigDecimal确保数值精确 */
     public BigDecimal size;
 
-    public Force(){
+    public Force() {
         this(new BigDecimal("0.0"));
     }
-    public Force(float size){
-        this(new BigDecimal(size));
-    }
-    public Force(BigDecimal size){
+
+    public Force(BigDecimal size) {
         this.size = size;
     }
 
-    public void setSize(BigDecimal size){
-        this.size = size;
+    public Force(float size) {
+        this(new BigDecimal(size));
     }
-    public void setSize(float size){
+
+    public void setSize(float size) {
         this.setSize(BigDecimal.valueOf(size));
     }
-    public void setSize(int size){
+
+    public void setSize(BigDecimal size) {
+        this.size = size;
+    }
+
+    public void setSize(int size) {
         this.setSize(BigDecimal.valueOf(size));
     }
 
@@ -36,12 +40,12 @@ public class Force {
         this.add(BigDecimal.valueOf(size));
     }
 
-    public void add(int size) {
-        this.add(BigDecimal.valueOf(size));
-    }
-
     public void add(BigDecimal bigDecimal) {
         size = size.add(bigDecimal);
+    }
+
+    public void add(int size) {
+        this.add(BigDecimal.valueOf(size));
     }
 
     /** 减去一个数,但好像和加没啥区别,不建议使用 */
@@ -49,7 +53,7 @@ public class Force {
         size = size.subtract(bigDecimal);
     }
 
-    public boolean isClockwise(){
+    public boolean isClockwise() {
         return !(size.floatValue() < 0);
     }
 
