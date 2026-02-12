@@ -14,7 +14,7 @@ object MEStatValues {
     fun composition(items: Seq<Item>, itemPercentage: FloatSeq): StatValue {
         return StatValue {
             it.row()
-            it.left().top().defaults();
+            it.left().top().defaults()
             items.forEachIndexed() { i, item ->
                 it.row()
                 it.table(Styles.grayPanel) { tb ->

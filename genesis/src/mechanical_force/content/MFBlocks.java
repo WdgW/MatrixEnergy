@@ -132,8 +132,6 @@ public class MFBlocks {
                         Lines.square(x, y, 8 * Mathf.sin(0.025f * Time.time), 45);
 
                     }
-
-                    ;
                 };
             }
 

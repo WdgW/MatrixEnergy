@@ -454,7 +454,9 @@ public class PropShaft extends Block implements ForceBlock {
         public void read(Reads read, byte revision) {
             super.read(read, revision);
             if (revision >= 1) {
-                if (force == null && block instanceof ForceBlock && ((ForceBlock) block).hasForce) force = new ForceModule();
+                if (force == null && block instanceof ForceBlock
+//                    && ForceBlock.hasForce
+                ) force = new ForceModule();
                 assert force != null;
                 force.read(read);
                 float firstX = read.f();

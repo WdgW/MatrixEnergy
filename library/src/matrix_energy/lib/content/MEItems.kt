@@ -15,58 +15,83 @@ object MEItems {
 
     @JvmField
     var coal: MEItem? = null
+
     @JvmField
     var Fe: PureSubstanceItem? = null
+
     @JvmField
     var Fe2O3: PureSubstanceItem? = null
+
     @JvmField
     var Si: PureSubstanceItem? = null
+
     @JvmField
     var SiO2: PureSubstanceItem? = null
+
     @JvmField
     var Al: PureSubstanceItem? = null
+
     @JvmField
     var Al2O3: PureSubstanceItem? = null
+
     @JvmField
     var lead: MEItem? = null
+
     @JvmField
     var copper: MEItem? = null
+
     @JvmField
     var gold: PureSubstanceItem? = null
+
     @JvmField
     var leadZinc: MEItem? = null
+
     @JvmField
     var nickel: PureSubstanceItem? = null
+
     @JvmField
     var tin: PureSubstanceItem? = null
+
     @JvmField
     var starch: PureSubstanceItem? = null
+
     @JvmField
     var plastic: MEItem? = null
+
     @JvmField
     var sand: MEItem? = null
+
     @JvmField
     var saltpeter: MEItem? = null
+
     @JvmField
     var sulfide: MEItem? = null
+
     @JvmField
     var blackPowder: MEItem? = null
+
     @JvmField
     var carbonFiber: MEItem? = null
+
     @JvmField
     var glass: MEItem? = null
 
     //10% 25% 50% 75% 99%
     @JvmField
     var ironOreItem10: CompositeItem? = null
+
     @JvmField
     var ironOreItem25: CompositeItem? = null
+
     @JvmField
     var ironOreItem50: CompositeItem? = null
+
     @JvmField
     var ironOreItem75: CompositeItem? = null
+
     @JvmField
     var ironOreItem99: CompositeItem? = null
+
     @JvmField
     val duplicateItems: Seq<MEItem> = Seq.with(coal, copper, lead, sand, sulfide, glass)
 
@@ -88,9 +113,8 @@ object MEItems {
         name: String,
         color: Color = Color.black.cpy(),
         localizedName: String = name,
-        item: Item? = null
+        var item: Item? = null
     ) : MEItem(name, color, localizedName) {
-        var item: Item? = item
         override fun loadIcon() {
             super.loadIcon()
             item?.let {

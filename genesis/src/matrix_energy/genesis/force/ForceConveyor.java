@@ -9,7 +9,6 @@ import arc.util.io.Writes;
 import mindustry.entities.TargetPriority;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
-import mindustry.gen.Sounds;
 import mindustry.gen.Teamc;
 import mindustry.graphics.Layer;
 import mindustry.logic.LAccess;
@@ -52,7 +51,7 @@ public class ForceConveyor extends Conveyor implements ForceBlock {
         conveyorPlacement = true;
         underBullets = false;//为 true 时，除非明确指定目标，否则子弹无法击中该区块。
 
-        ambientSound = Sounds.conveyor;//环境声音
+//        ambientSound = Sounds.conveyor;//环境声音
         ambientSoundVolume = 0.0022f;//环境音量
         unloadable = true;//卸荷器是否在该区块工作
         noUpdateDisabled = false;//若为 true，则禁用时区块停止更新

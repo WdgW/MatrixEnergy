@@ -63,7 +63,7 @@ public class ForceCore extends CoreBlock {
 
         @Override
         public byte version() {
-            return 1;
+            return 2;
         }
 
         @Override
