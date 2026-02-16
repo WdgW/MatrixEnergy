@@ -1,10 +1,10 @@
 // build.gradle.kts
 
 // 从 gradle.properties 或命令行参数读取属性
-val kotlinVersion = "2.2.20"
-val kryoVersion = "5.6.0"
-val mindustryVersion = "v155"
-val jabelVersion = "93fde537c7"
+val kotlinVersion: String = "2.2.20"
+val kryoVersion: String = "5.6.0"
+val mindustryVersion: String = "v155"
+val jabelVersion: String = "93fde537c7"
 val modName: String = "MatrixEnergy"
 val modNameL: String = "MatrixEnergyLib"
 val modNameG: String = "MatrixEnergyGenesis"
