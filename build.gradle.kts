@@ -60,7 +60,7 @@ subprojects {
     dependencies {
         compileOnly("com.github.Anuken.Arc:arc-core:$mindustryVersion")
         compileOnly("com.github.Anuken.Mindustry:core:$mindustryVersion")
-        annotationProcessor("com.github.Anuken.Jabel:$jabelVersion")
+        annotationProcessor("com.github.Anuken.Jabel:jabel:$jabelVersion")
     }
 
     tasks.withType<JavaCompile>().configureEach {
