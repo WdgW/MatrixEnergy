@@ -13,10 +13,9 @@ object MEBlocks {
 
     @JvmStatic
     fun load() {
-        oreIron = object : MEOreBlock("ore-iron", MEItems.ironOreItem10) {
-            init {
-                requirements(Category.distribution, ItemStack.with(MEItems.Fe, 100))
-            }
+        oreIron = MEOreBlock("ore-iron", MEItems.ironOreItem10).apply {
+            requirements(Category.distribution, ItemStack.with(MEItems.Fe, 100))
+
         }
     }
 }

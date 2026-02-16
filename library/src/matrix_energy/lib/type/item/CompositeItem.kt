@@ -4,7 +4,7 @@ import arc.graphics.Color
 import arc.struct.FloatSeq
 import arc.struct.IntSeq
 import arc.struct.Seq
-import matrix_energy.lib.interfaces.item.Composite
+import matrix_energy.lib.MatrixEnergyInterfaces.Composite
 import matrix_energy.lib.world.meta.MEStat
 import matrix_energy.lib.world.meta.MEStatValues
 import mindustry.type.Item

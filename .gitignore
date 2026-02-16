@@ -1,4 +1,4 @@
-build.gradle
+build.gradle.kts
 library/build.gradle
 genesis/build.gradle
 

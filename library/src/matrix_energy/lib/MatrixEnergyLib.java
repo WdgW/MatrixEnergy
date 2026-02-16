@@ -31,6 +31,7 @@ public class MatrixEnergyLib extends Mod {
     public MatrixEnergyLib() {
         Log.infoTag("ME-Lib", "ME-Lib version " + modVersion + " loaded");
         MEDirectory = Vars.dataDirectory.child("matrixenergy");
+        
 
         Events.on(
                 EventType.ClientLoadEvent.class, e -> {

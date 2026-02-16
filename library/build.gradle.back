@@ -1,0 +1,121 @@
+version '0.1.0-dev'
+
+sourceSets.main.java.srcDirs = ["src"]
+
+ext {
+    deployFileName = modNameL + "-" + version + ".jar"
+    desktopJarPath = layout.buildDirectory.get().toString() + "/libs/" + modNameL + "Desktop.jar"
+    androidJarPath = layout.buildDirectory.get().toString() + "/libs/" + modNameL + "Android.jar"
+
+//    println "modNameL: $modNameL; deployFileName: $deployFileName; desktopJarPath: $desktopJarPath; androidJarPath: $androidJarPath"
+}
+
+dependencies {
+    implementation 'com.esotericsoftware:kryo:5.6.0'
+    implementation 'org.objenesis:objenesis:3.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.10.2"
+}
+
+tasks.register('jarAndroid') {
+    dependsOn jar
+
+    doLast {
+        if (!sdkRoot || !new File(sdkRoot).exists()) throw new GradleException("No valid Android SDK found. Ensure that ANDROID_HOME is set to your Android SDK directory.")
+
+        def platformRoot = new File("$sdkRoot/platforms/").listFiles().sort().reverse().find { f -> new File(f, "android.jar").exists() }
+
+        if (!platformRoot) throw new GradleException("No android.jar found. Ensure that you have an Android platform installed.")
+
+        //collect dependencies needed for desugaring
+        def dependencies = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File(platformRoot, "android.jar")]).collect { "--classpath $it.path" }.join(" ")
+
+        def d8 = isWindows ? "d8.bat" : "d8"
+
+        //dex and desugar files - this requires d8 in your PATH
+        "$d8 $dependencies --min-api 14 --output ${modNameL}Android.jar ${modNameL}Desktop.jar"
+                .execute(null, new File("${layout.buildDirectory.get()}/libs")).waitForProcessOutput(System.out, System.err)
+    }
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    archiveFileName = "${modNameL}Desktop.jar"
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    from(projectDir) {
+        include "mod.hjson"
+    }
+
+    from("../assets/library") {
+        include "**"
+    }
+
+}
+
+tasks.register('deploy', Jar) {
+    dependsOn jar
+    dependsOn jarAndroid
+
+    println "deploy ${deployFileName} running"
+
+    archiveFileName = deployFileName
+
+    from {
+        [zipTree(desktopJarPath), zipTree(androidJarPath)]
+    }
+
+    doLast {
+        // 删除临时jar文件
+        delete desktopJarPath, androidJarPath
+    }
+}
+
+tasks.register("runBatchScript", Exec) {
+    workingDir 'W:\\game'
+    commandLine 'W:\\game\\mindustry.bat'
+}
+
+tasks.register("cleanGameMode") {
+    delete "$mindustryDataDir/mods/${deployFileName}"
+}
+
+tasks.register("copyToGameDir") {
+    dependsOn deploy
+    dependsOn cleanGameMode
+
+    println "copyToGameDir running"
+
+    doLast {
+        copy {
+            from("${layout.buildDirectory.get()}/libs/${deployFileName}")
+            into("$mindustryDataDir/mods")
+        }
+    }
+}
+
+tasks.register("playGame") {
+    dependsOn jar
+
+    println "buildDir: ${layout.buildDirectory.get()}; version: $version"
+
+    doFirst {
+        delete "$mindustryDataDir/mods/${deployFileName}"
+    }
+
+    doLast {
+        copy {
+            from("${layout.buildDirectory.get()}/libs/${deployFileName}")
+            into("$mindustryDataDir/mods")
+        }
+
+        exec {
+            workingDir 'W:\\game'
+            commandLine 'W:\\game\\mindustry.bat'
+        }
+    }
+}

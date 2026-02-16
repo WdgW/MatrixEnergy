@@ -3,7 +3,7 @@ package matrix_energy.lib.type.item
 import arc.graphics.Color
 import arc.util.io.Reads
 import arc.util.io.Writes
-import matrix_energy.lib.interfaces.MatrixEnergyItem
+import matrix_energy.lib.MatrixEnergyInterfaces.MatrixEnergyItem
 import mindustry.type.Item
 
 /**

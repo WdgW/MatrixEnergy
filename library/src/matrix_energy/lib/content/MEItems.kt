@@ -2,6 +2,10 @@ package matrix_energy.lib.content
 
 import arc.graphics.Color
 import arc.struct.Seq
+import arc.util.Log
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import matrix_energy.lib.type.item.CompositeItem
 import matrix_energy.lib.type.item.MEItem
 import matrix_energy.lib.type.item.PureSubstanceItem
@@ -12,6 +16,12 @@ import mindustry.type.Item
  * @author dg
  */
 object MEItems {
+
+    init {
+        CoroutineScope(Dispatchers.Main).launch {
+            while (true) Log.info("12")
+        }
+    }
 
     @JvmField
     var coal: MEItem? = null
@@ -157,6 +167,7 @@ object MEItems {
         ironOreItem50 = CompositeItem("iron-ore-50", Seq.with(Fe2O3, 2, SiO2, 1, Al2O3, 1), Color.red, "赤铁矿")
         ironOreItem75 = CompositeItem("iron-ore-75", Seq.with(Fe2O3, 6, SiO2, 1, Al2O3, 1), Color.red, "赤铁矿")
         ironOreItem99 = CompositeItem("iron-ore-99", Seq.with(Fe2O3, 99, SiO2, 1), Color.red, "赤铁矿")
+
 
     }
 }
