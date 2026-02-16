@@ -4,7 +4,7 @@
 val kotlinVersion = "2.2.20"
 val kryoVersion = "5.6.0"
 val mindustryVersion = "v155"
-val jabelVersion = "93fde537c7"
+val jabelVersion = "0.9.0"
 val modName: String = "MatrixEnergy"
 val modNameL: String = "MatrixEnergyLib"
 val modNameG: String = "MatrixEnergyGenesis"
