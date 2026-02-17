@@ -129,36 +129,34 @@ object MEItems {
 
     @JvmStatic
     fun load() {
-        coal = _MEItem("coal", Color(0f, 0f, 0f), "煤", Items.coal)
-        copper = _MEItem("copper", Color(255f, 140f, 0f), "铜", Items.copper) //Cu
-        lead = _MEItem("lead", Color.valueOf("2s4mwjw"), "铅", Items.lead) //Pb
-        glass = _MEItem("glass", Color.valueOf("d0fx0oi"), "玻璃", Items.metaglass)
-        sand = _MEItem("sand", Color.valueOf("gk9v045"), "沙子", Items.sand)
-        sulfide = _MEItem("sulfide", Color.valueOf("oxhg1ut"), "硫化物", Items.pyratite)
-        Fe = PureSubstanceItem("iron", Color(192f, 192f, 192f), "铁") //
-        Fe2O3 = PureSubstanceItem("iron-oxide", Color(255f, 0f, 0f), "氧化铁") //Fe2O3
-        Si = PureSubstanceItem("silicon", Color(255f, 255f, 255f), "硅") //Si
-        SiO2 = PureSubstanceItem("silicon-dioxide", Color(255f, 255f, 255f), "二氧化硅") //SiO2
-        gold = PureSubstanceItem("gold", Color(255f, 215f, 0f), "金") //Au
-        leadZinc = MEItem("lead-zinc", Color(165f, 165f, 165f), "铅锌")
-        nickel = PureSubstanceItem("nickel", Color(185f, 185f, 185f), "镍") //Ni
-        tin = PureSubstanceItem("tin", Color(220f, 220f, 220f), "锡") //Sn
-        starch = PureSubstanceItem("starch", Color.valueOf("ri31nrz"), "淀粉")
-        Al = PureSubstanceItem("aluminium", Color.valueOf("e0e0e0"), "铝") //Al
-        Al2O3 = PureSubstanceItem("aluminium-oxide", Color.valueOf("e0e0e0"), "氧化铝") //Al2O3
-        plastic = MEItem("plastic", Color.valueOf("5rkz0lw"), "塑钢")
-        saltpeter = MEItem("saltpeter", Color.valueOf("rovf956"), "火硝")
-        blackPowder = MEItem("blackPowder", Color.valueOf("7cqb1if"), "黑火药")
-        carbonFiber = MEItem("carbonFiber", Color.valueOf("to9pp4p"), "碳纤维")
-
+        coal = _MEItem("coal", "煤", Color(0f, 0f, 0f), Items.coal)
+        copper = _MEItem("copper", "铜", Color(255f, 140f, 0f), Items.copper) //Cu
+        lead = _MEItem("lead", "铅", Color.valueOf("2s4mwjw"), Items.lead) //Pb
+        glass = _MEItem("glass", "玻璃", Color.valueOf("d0fx0oi"), Items.metaglass)
+        sand = _MEItem("sand", "沙子", Color.valueOf("gk9v045"), Items.sand)
+        sulfide = _MEItem("sulfide", "硫化物", Color.valueOf("oxhg1ut"), Items.pyratite)
+        Fe = PureSubstanceItem("iron", "铁", Color(192f, 192f, 192f)) //
+        Fe2O3 = PureSubstanceItem("iron-oxide", "氧化铁", Color(255f, 0f, 0f)) //Fe2O3
+        Si = PureSubstanceItem("silicon", "硅", Color(255f, 255f, 255f)) //Si
+        SiO2 = PureSubstanceItem("silicon-dioxide", "二氧化硅", Color(255f, 255f, 255f)) //SiO2
+        gold = PureSubstanceItem("gold", "金", Color(255f, 215f, 0f)) //Au
+        leadZinc = MEItem("lead-zinc", "铅锌", Color(165f, 165f, 165f))
+        nickel = PureSubstanceItem("nickel", "镍", Color(185f, 185f, 185f)) //Ni
+        tin = PureSubstanceItem("tin", "锡", Color(220f, 220f, 220f)) //Sn
+        starch = PureSubstanceItem("starch", "淀粉", Color.valueOf("ri31nrz"))
+        Al = PureSubstanceItem("aluminium", "铝", Color.valueOf("e0e0e0")) //Al
+        Al2O3 = PureSubstanceItem("aluminium-oxide", "氧化铝", Color.valueOf("e0e0e0")) //Al2O3
+        plastic = MEItem("plastic", "塑钢", Color.valueOf("5rkz0lw"))
+        saltpeter = MEItem("saltpeter", "火硝", Color.valueOf("rovf956"))
+        blackPowder = MEItem("blackPowder", "黑火药", Color.valueOf("7cqb1if"))
+        carbonFiber = MEItem("carbonFiber", "碳纤维", Color.valueOf("to9pp4p"))
 
         //多物品
-        ironOreItem10 = CompositeItem("iron-ore-10", Seq.with(Fe2O3, 1, SiO2, 6, Al2O3, 3), Color.red, "赤铁矿")
-        ironOreItem25 = CompositeItem("iron-ore-25", Seq.with(Fe2O3, 1, SiO2, 2, Al2O3, 1), Color.red, "赤铁矿")
-        ironOreItem50 = CompositeItem("iron-ore-50", Seq.with(Fe2O3, 2, SiO2, 1, Al2O3, 1), Color.red, "赤铁矿")
-        ironOreItem75 = CompositeItem("iron-ore-75", Seq.with(Fe2O3, 6, SiO2, 1, Al2O3, 1), Color.red, "赤铁矿")
-        ironOreItem99 = CompositeItem("iron-ore-99", Seq.with(Fe2O3, 99, SiO2, 1), Color.red, "赤铁矿")
-
+        ironOreItem10 = CompositeItem("iron-ore-10", Seq.with(Fe2O3, 1, SiO2, 6, Al2O3, 3), "赤铁矿", Color.red)
+        ironOreItem25 = CompositeItem("iron-ore-25", Seq.with(Fe2O3, 1, SiO2, 2, Al2O3, 1), "赤铁矿", Color.red)
+        ironOreItem50 = CompositeItem("iron-ore-50", Seq.with(Fe2O3, 2, SiO2, 1, Al2O3, 1), "赤铁矿", Color.red)
+        ironOreItem75 = CompositeItem("iron-ore-75", Seq.with(Fe2O3, 6, SiO2, 1, Al2O3, 1), "赤铁矿", Color.red)
+        ironOreItem99 = CompositeItem("iron-ore-99", Seq.with(Fe2O3, 99, SiO2, 1), "赤铁矿", Color.red)
 
     }
 }
