@@ -11,9 +11,12 @@ import mindustry.type.Item
  */
 open class MEItem @JvmOverloads constructor(
     name: String,
-    color: Color = Color.black.cpy(),
-    localizedName: String = name
+    color: Color = Color.black.cpy()
 ) : Item(name, color), MatrixEnergyItem {
+    
+    constructor(name: String, localizedName: String, color: Color = Color.black.cpy()): this(name, color){
+        this.localizedName = localizedName
+    }
 
     init {
         this.localizedName = localizedName
