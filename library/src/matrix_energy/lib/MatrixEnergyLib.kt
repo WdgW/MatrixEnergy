@@ -1,82 +1,93 @@
-package matrix_energy.lib;
+package matrix_energy.lib
 
-import arc.Events;
-import arc.files.Fi;
-import arc.struct.Seq;
-import arc.util.Log;
-import matrix_energy.lib.content.MEBlocks;
-import matrix_energy.lib.content.MEItems;
-import matrix_energy.lib.content.MEPlanets;
-import matrix_energy.lib.content.MEUnitTypes;
-import matrix_energy.lib.data.ModData;
-import matrix_energy.lib.ui.dialogs.AchievementDialog;
-import mindustry.Vars;
-import mindustry.game.EventType;
-import mindustry.gen.Icon;
-import mindustry.mod.Mod;
-import mindustry.ui.fragments.MenuFragment.MenuButton;
-
-import static mindustry.Vars.*;
+import arc.Events
+import arc.files.Fi
+import arc.struct.Seq
+import arc.util.Log
+import matrix_energy.lib.content.MEBlocks
+import matrix_energy.lib.content.MEItems
+import matrix_energy.lib.content.MEPlanets
+import matrix_energy.lib.content.MEUnitTypes
+import matrix_energy.lib.data.ModData
+import matrix_energy.lib.ui.dialogs.AchievementDialog
+import mindustry.Vars
+import mindustry.game.EventType.ClientLoadEvent
+import mindustry.gen.Icon
+import mindustry.mod.Mod
+import mindustry.ui.fragments.MenuFragment
 
 /**
  * @author DG
  */
-public class MatrixEnergyLib extends Mod {
-    public static final String modName = "matrixenergy-lib";
-    public static final String modVersion = "0.1.0-dev";
-    public static Fi MEDirectory;
-    public static AchievementDialog achievementDialog;
+class MatrixEnergyLib : Mod() {
+    companion object {
+        const val modName: String = "matrixenergy-lib"
+        const val modVersion: String = "0.1.0-dev"
+        val MEDirectory: Fi by lazy { Vars.dataDirectory.child("matrixenergy") }
+        val achievementDialog: AchievementDialog by lazy { AchievementDialog() }
+    }
 
+    init {
+        Log.infoTag("ME-Lib", "ME-Lib version " + modVersion + " loaded")
 
-    public MatrixEnergyLib() {
-        Log.infoTag("ME-Lib", "ME-Lib version " + modVersion + " loaded");
-        MEDirectory = Vars.dataDirectory.child("matrixenergy");
-        
 
         Events.on(
-                EventType.ClientLoadEvent.class, e -> {
-                    achievementDialog = new AchievementDialog();
-                    Vars.ui.menufrag.desktopButtons = Seq.with(
-                            new MenuButton(
-                                    "@play", Icon.play, () -> {},
-                                    new MenuButton("@campaign", Icon.play, () -> checkPlay(ui.planet::show)),
-                                    new MenuButton("@joingame", Icon.add, () -> checkPlay(ui.join::show)),
-                                    new MenuButton("@customgame", Icon.terrain, () -> checkPlay(ui.custom::show)),
-                                    new MenuButton("@loadgame", Icon.download, () -> checkPlay(ui.load::show))
-                            ),
-                            new MenuButton(
-                                    "@database.button", Icon.menu, () -> {},
-                                    new MenuButton("@schematics", Icon.paste, ui.schematics::show),
-                                    new MenuButton("@database", Icon.book, ui.database::show),
-                                    new MenuButton("@about.button", Icon.info, ui.about::show)
-                            ),
-                            new MenuButton("@achievements", Icon.lock, achievementDialog::show),
-                            new MenuButton("@editor", Icon.terrain, () -> checkPlay(ui.maps::show)), steam ? new MenuButton("@workshop", Icon.steam, platform::openWorkshop) : null,
-                            new MenuButton("@mods", Icon.book, ui.mods::show),
-                            new MenuButton("@settings", Icon.settings, ui.settings::show)
-                                                              );
-                }
-                 );
-
+            ClientLoadEvent::class.java
+        ) { e: ClientLoadEvent? ->
+            Vars.ui.menufrag.desktopButtons = Seq.with(
+                MenuFragment.MenuButton(
+                    "@play", Icon.play, {},
+                    MenuFragment.MenuButton(
+                        "@campaign",
+                        Icon.play
+                    ) { checkPlay { Vars.ui.planet.show() } },
+                    MenuFragment.MenuButton(
+                        "@joingame",
+                        Icon.add,
+                        { checkPlay({ Vars.ui.join.show() }) }),
+                    MenuFragment.MenuButton(
+                        "@customgame",
+                        Icon.terrain,
+                        { checkPlay({ Vars.ui.custom.show() }) }),
+                    MenuFragment.MenuButton(
+                        "@loadgame",
+                        Icon.download,
+                        { checkPlay({ Vars.ui.load.show() }) })
+                ),
+                MenuFragment.MenuButton(
+                    "@database.button", Icon.menu, {},
+                    MenuFragment.MenuButton("@schematics", Icon.paste, { Vars.ui.schematics.show() }),
+                    MenuFragment.MenuButton("@database", Icon.book, { Vars.ui.database.show() }),
+                    MenuFragment.MenuButton("@about.button", Icon.info, { Vars.ui.about.show() })
+                ),
+                MenuFragment.MenuButton("@achievements", Icon.lock, { achievementDialog.show() }),
+                MenuFragment.MenuButton(
+                    "@editor",
+                    Icon.terrain,
+                    { checkPlay({ Vars.ui.maps.show() }) }),
+                if (Vars.steam) MenuFragment.MenuButton(
+                    "@workshop",
+                    Icon.steam,
+                    { Vars.platform.openWorkshop() }) else null,
+                MenuFragment.MenuButton("@mods", Icon.book, { Vars.ui.mods.show() }),
+                MenuFragment.MenuButton("@settings", Icon.settings, { Vars.ui.settings.show() })
+            )
+        }
     }
 
-    public void checkPlay(Runnable run) {
-        if (!mods.hasContentErrors()) {
-            run.run();
-        }
-        else {
-            ui.showInfo("@mod.noerrorplay");
+    fun checkPlay(run: Runnable) {
+        if (!Vars.mods.hasContentErrors()) {
+            run.run()
+        } else {
+            Vars.ui.showInfo("@mod.noerrorplay")
         }
     }
 
-    @Override
-    public void loadContent() {
-        MEItems.load();
-        MEBlocks.load();
-        MEUnitTypes.load();
-        MEPlanets.load();
-        ModData.load();
-
-
+    override fun loadContent() {
+        MEItems.load()
+        MEBlocks.load()
+        MEUnitTypes.load()
+        MEPlanets.load()
+        ModData.load()
     }
 }

@@ -18,7 +18,7 @@ object Blocks {
          * - 自动连接管理
          * - 应力状态显示
          */
-        val kineticShaftTest = KineticShaft("kinetic-shaft-test", "动能传动轴测试版").apply {
+        val kineticShaftTest = KineticShaft("propShaft", "动能传动轴测试版").apply {
             // 基础属性配置
             description = "用于测试动能传动轴功能的测试装置"
 

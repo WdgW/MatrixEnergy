@@ -2,7 +2,7 @@ package matrix_energy.lib.data
 
 import arc.files.Fi
 import matrix_energy.lib.MatrixEnergyLib
-import matrix_energy.lib.MatrixEnergyLib.modVersion
+import matrix_energy.lib.MatrixEnergyLib.Companion.modVersion
 import matrix_energy.lib.data.serialization.KryoPool
 
 object ModData {
