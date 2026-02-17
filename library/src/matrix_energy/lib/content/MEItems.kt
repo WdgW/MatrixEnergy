@@ -2,10 +2,6 @@ package matrix_energy.lib.content
 
 import arc.graphics.Color
 import arc.struct.Seq
-import arc.util.Log
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import matrix_energy.lib.type.item.CompositeItem
 import matrix_energy.lib.type.item.MEItem
 import matrix_energy.lib.type.item.PureSubstanceItem
@@ -17,11 +13,6 @@ import mindustry.type.Item
  */
 object MEItems {
 
-    init {
-        CoroutineScope(Dispatchers.Main).launch {
-            while (true) Log.info("12")
-        }
-    }
 
     @JvmField
     var coal: MEItem? = null

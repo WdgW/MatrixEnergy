@@ -3,6 +3,7 @@ package matrix_energy.genesis.kinetic
 import mindustry.gen.Building
 import mindustry.world.Block
 
+
 /**
  * @author dg
  */
@@ -32,7 +33,7 @@ open class KineticBlock(name: String) : Block(name) {
 
 
     //    var Multipliers: Any = TODO()
-    open inner class ForceBuild : Building() {
+    open inner class KineticBuild : Building() {
         var force: KineticModule = KineticModule()
     }
 }

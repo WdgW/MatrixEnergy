@@ -1,44 +1,29 @@
-package matrix_energy.genesis.kinetic;
+package matrix_energy.genesis.kinetic
 
-import mindustry.gen.Building;
-import mindustry.world.Block;
+import arc.func.Prov
 
 /**
  * @author dg
  */
-public class ForceNode extends Block implements ForceBlock {
+open class ForceNode(name: String, localizedName: String = name) : KineticBlock(name) {
 
-    public ForceNode(String name, String localizedName) {
-        this(name);
-        this.localizedName = localizedName;
+    init {
+        this.localizedName = localizedName
+        buildType = Prov { KineticNodeBuild() }
     }
 
-    public ForceNode(String name) {
-        super(name);
-        buildType = ForceNodeBuild::new;
+    override fun setStats() {
+        super.setStats()
+        //        stats.add(Stat.powerRange, range, StatUnit.blocks);
     }
 
-    @Override
-    public void setStats() {
-        super.setStats();
-//        stats.add(Stat.powerRange, range, StatUnit.blocks);
-    }
-
-    @Override
-    public void init() {
-        super.init();
-//        updateClipRadius((range + 1) * tilesize);
+    override fun init() {
+        super.init()
+        //        updateClipRadius((range + 1) * tilesize);
     }
 
 
-    public class ForceNodeBuild extends Building implements ForceBuild {
-        public ForceModule force;
+    open inner class KineticNodeBuild : KineticBuild() {
 
-        public ForceNodeBuild() {
-            super();
-            if (block instanceof ForceBlock && force == null) {
-                force = new ForceModule();
-            }
-        }
     }
 }

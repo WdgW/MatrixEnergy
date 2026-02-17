@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 // build.gradle.kts
 
 // 从 gradle.properties 或命令行参数读取属性
@@ -5,9 +8,12 @@ val kotlinVersion: String = "2.2.20"
 val kryoVersion: String = "5.6.0"
 val mindustryVersion: String = "v155"
 val jabelVersion: String = "93fde537c7"
-val modName: String = "MatrixEnergy"
-val modNameL: String = "MatrixEnergyLib"
-val modNameG: String = "MatrixEnergyGenesis"
+val modName: String by project
+val modVersion: String by project
+val modNameL: String by project
+val versionL: String by project
+val modNameG: String by project
+val versionG: String by project
 
 buildscript {
     repositories {
@@ -28,50 +34,60 @@ buildscript {
 
 plugins {
     java
-    kotlin("jvm") version "2.2.20" apply false
+    kotlin("jvm") apply false
 }
 
-
 allprojects {
+    apply(plugin = "java")
+    apply(plugin = "org.jetbrains.kotlin.jvm")
     group = "matrix_energy"
-    version = "0.1.0-dev"
+    version = modVersion
 
     repositories {
         mavenCentral()
-        maven {
-            url = uri("https://maven.aliyun.com/repository/public")
-        }
-        maven {
-            url = uri("https://maven.aliyun.com/repository/google")
-        }
-        maven {
-            url = uri("https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository")
-        }
+        maven { url = uri("https://maven.aliyun.com/repository/public") }
+        maven { url = uri("https://maven.aliyun.com/repository/google") }
+        maven { url = uri("https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository") }
         maven { url = uri("https://jitpack.io") }
     }
-}
 
-subprojects {
-    apply(plugin = "java")
-    apply(plugin = "org.jetbrains.kotlin.jvm")
-
-    dependencies {
-        compileOnly("com.github.Anuken.Arc:arc-core:$mindustryVersion")
-        compileOnly("com.github.Anuken.Mindustry:core:$mindustryVersion")
-        annotationProcessor("com.github.Anuken.Jabel:jabel:$jabelVersion")
+    tasks.withType<KotlinCompile>().configureEach {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
-
     tasks.withType<JavaCompile>().configureEach {
-        options.compilerArgs.addAll(listOf("--release", "8"))
+        options.release.set(17)
         options.encoding = "UTF-8"
     }
+
+    configure<org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension> {
+        jvmToolchain(17)
+    }
+
+    configure<JavaPluginExtension> {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(17))
+        }
+    }
 }
+
+//subprojects {
+//    apply(plugin = "java")
+//    apply(plugin = "org.jetbrains.kotlin.jvm")
+//
+//    tasks.withType<JavaCompile>().configureEach {
+//        options.release.set(17)
+//        options.encoding = "UTF-8"
+//    }
+//
+//}
 
 // 配置依赖版本一致性
 configurations.all {
     resolutionStrategy.eachDependency {
         if (requested.group == "com.github.Anuken.Arc") {
-            useVersion(rootProject.extra["mindustryVersion"] as String)
+            useVersion(mindustryVersion)
         }
     }
 }
@@ -81,16 +97,15 @@ project(":") {
     apply(plugin = "java")
     apply(plugin = "org.jetbrains.kotlin.jvm")
 
-    // 正确配置 sourceSets
-    configure<SourceSetContainer> {
-        named("main") {
-            java.srcDirs("src", "library/src", "genesis/src")
-            resources.srcDirs("assets")
-        }
-
+    sourceSets.main {
+        java.srcDirs("src", "library/src", "genesis/src")
+        resources.setSrcDirs(listOf("assets/me"))
     }
 
     dependencies {
+        compileOnly("com.github.Anuken.Arc:arc-core:${mindustryVersion}")
+        compileOnly("com.github.Anuken.Mindustry:core:${mindustryVersion}")
+        annotationProcessor("com.github.Anuken:jabel:$jabelVersion")
         implementation(project(":library"))
         implementation(project(":genesis"))
     }
@@ -106,12 +121,6 @@ project(":") {
         from(projectDir) {
             include("mod.hjson")
         }
-
-        from("assets") {
-            include("**")
-        }
-
-        dependsOn(configurations.runtimeClasspath)
     }
 
     tasks.register("jarAndroid") {
@@ -175,18 +184,18 @@ project(":") {
 
 // library 子项目配置
 project(":library") {
-    apply(plugin = "java")
-    apply(plugin = "org.jetbrains.kotlin.jvm")
 
-    configure<SourceSetContainer> {
-        named("main") {
-            java.srcDirs("library/src")
-            resources.srcDirs("assets/library")
-        }
+
+    sourceSets.main {
+        java.srcDirs("src")
+        resources.srcDirs("../assets/library")
     }
 
     dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion") { isTransitive = true }
+        compileOnly("com.github.Anuken.Arc:arc-core:${mindustryVersion}")
+        compileOnly("com.github.Anuken.Mindustry:core:${mindustryVersion}")
+        annotationProcessor("com.github.Anuken:jabel:$jabelVersion")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
         implementation("com.esotericsoftware:kryo:$kryoVersion")
     }
 
@@ -199,14 +208,12 @@ project(":library") {
         })
 
         from(projectDir) {
-            include("library/src/mod.hjson")
+            include("mod.hjson")
         }
 
         from("../assets/library/") {
             include("**")
         }
-
-        dependsOn(configurations.runtimeClasspath)
     }
 
     tasks.register("jarAndroid") {
@@ -278,39 +285,34 @@ project(":library") {
 
 // genesis 子项目配置
 project(":genesis") {
-    apply(plugin = "java")
-    apply(plugin = "org.jetbrains.kotlin.jvm")
 
-    configure<SourceSetContainer> {
-        named("main") {
-            java.srcDirs("genesis/src")
-            resources.srcDirs("assets/genesis")
-        }
+
+    sourceSets.main {
+        java.srcDirs("src")
+        resources.srcDirs("../assets/genesis")
     }
 
     dependencies {
-        implementation(project(":library"))
-        implementation(project(":"))
+        compileOnly(project(":library"))
+        compileOnly("com.github.Anuken.Arc:arc-core:${mindustryVersion}")
+        compileOnly("com.github.Anuken.Mindustry:core:${mindustryVersion}")
+        annotationProcessor("com.github.Anuken:jabel:$jabelVersion")
+        compileOnly("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     }
 
     tasks.named<Jar>("jar") {
-        val modNameG = rootProject.extra["modNameG"] as String
         archiveFileName.set("${modNameG}Desktop.jar")
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-        from(configurations.runtimeClasspath.get().map {
-            if (it.isDirectory) it else zipTree(it)
+        from(provider {
+            configurations.runtimeClasspath.get().map {
+                if (it.isDirectory) it else zipTree(it)
+            }
         })
 
         from(projectDir) {
-            include("genesis/mod.hjson")
+            include("mod.hjson")
         }
-
-        from("../assets/genesis/") {
-            include("**")
-        }
-
-        dependsOn(configurations.runtimeClasspath)
     }
 
     tasks.register("jarAndroid") {
@@ -367,12 +369,11 @@ project(":genesis") {
     tasks.register<Jar>("deploy") {
         dependsOn("jarAndroid", "jar")
 
-        val modNameG = rootProject.extra["modNameG"] as String
         val libsDir = layout.buildDirectory.dir("libs").get().asFile
         val desktopJarPath = File(libsDir, "${modNameG}Desktop.jar")
         val androidJarPath = File(libsDir, "${modNameG}Android.jar")
 
-        archiveFileName.set("$modNameG-${rootProject.version}.jar")
+        archiveFileName.set("$modNameG-${versionG}.jar")
 
         from(zipTree(desktopJarPath), zipTree(androidJarPath))
 

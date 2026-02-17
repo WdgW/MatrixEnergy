@@ -4,7 +4,7 @@ import arc.struct.IntSet
 import arc.struct.Queue
 import arc.struct.Seq
 import arc.util.Time
-import matrix_energy.genesis.kinetic.KineticBlock.ForceBuild
+import matrix_energy.genesis.kinetic.KineticBlock.KineticBuild
 import kotlin.math.sqrt
 
 /**
@@ -20,9 +20,9 @@ import kotlin.math.sqrt
  */
 class KineticGraph {
     companion object {
-        private val queue: Queue<ForceBuild> = Queue<ForceBuild>()
-        private val outArray1: Seq<ForceBuild> = Seq<ForceBuild>()
-        private val outArray2: Seq<ForceBuild> = Seq<ForceBuild>()
+        private val queue: Queue<KineticBuild> = Queue<KineticBuild>()
+        private val outArray1: Seq<KineticBuild> = Seq<KineticBuild>()
+        private val outArray2: Seq<KineticBuild> = Seq<KineticBuild>()
         private val closedSet: IntSet = IntSet()
 
         // 机械常数
@@ -33,10 +33,10 @@ class KineticGraph {
     }
 
     // 网络成员
-    val producers: Seq<ForceBuild> = Seq<ForceBuild>(false, 32, ForceBuild::class.java)
-    val consumers: Seq<ForceBuild> = Seq<ForceBuild>(false, 32, ForceBuild::class.java)
-    val transmitters: Seq<ForceBuild> = Seq<ForceBuild>(false, 64, ForceBuild::class.java)
-    val all: Seq<ForceBuild> = Seq<ForceBuild>(false, 128, ForceBuild::class.java)
+    val producers: Seq<KineticBuild> = Seq<KineticBuild>(false, 32, KineticBuild::class.java)
+    val consumers: Seq<KineticBuild> = Seq<KineticBuild>(false, 32, KineticBuild::class.java)
+    val transmitters: Seq<KineticBuild> = Seq<KineticBuild>(false, 64, KineticBuild::class.java)
+    val all: Seq<KineticBuild> = Seq<KineticBuild>(false, 128, KineticBuild::class.java)
 
     // 网络状态
     var angularVelocity: Int = 0           // 当前角速度 (RPM)
@@ -94,7 +94,7 @@ class KineticGraph {
     /**
      * 计算节点传输效率
      */
-    private fun calculateEfficiency(build: ForceBuild): Float {
+    private fun calculateEfficiency(build: KineticBuild): Float {
         var efficiency = 1f
         // 根据距离和连接数计算效率损失
         val distanceFactor = calculateDistanceFactor(build)
@@ -105,7 +105,7 @@ class KineticGraph {
     /**
      * 计算距离因子（基于网络拓扑）
      */
-    private fun calculateDistanceFactor(build: ForceBuild): Float {
+    private fun calculateDistanceFactor(build: KineticBuild): Float {
         // 简化实现：基于节点在生产者列表中的位置
         val index = producers.indexOf(build)
         return if (index >= 0) index.toFloat() / producers.size else 1f
@@ -129,7 +129,7 @@ class KineticGraph {
         isOverloaded = loadFactor > 0.95f
 
         // 更新所有节点的力模块
-        updateForceModules()
+        updateKineticModules()
 
         lastUpdateTime = Time.time
     }
@@ -198,7 +198,7 @@ class KineticGraph {
     /**
      * 更新所有节点的力模块
      */
-    private fun updateForceModules() {
+    private fun updateKineticModules() {
         all.each { build ->
             val force = build.force
             force.angularVelocity = angularVelocity.toShort()
@@ -234,7 +234,7 @@ class KineticGraph {
     /**
      * 添加节点到网络
      */
-    fun addNode(build: ForceBuild) {
+    fun addNode(build: KineticBuild) {
         if (!all.contains(build)) {
             all.add(build)
 
@@ -253,7 +253,7 @@ class KineticGraph {
     /**
      * 从网络移除节点
      */
-    fun removeNode(build: ForceBuild) {
+    fun removeNode(build: KineticBuild) {
         all.remove(build)
         producers.remove(build)
         consumers.remove(build)
