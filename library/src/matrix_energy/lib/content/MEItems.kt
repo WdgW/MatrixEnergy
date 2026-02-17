@@ -112,10 +112,10 @@ object MEItems {
 
     class _MEItem(
         name: String,
-        color: Color = Color.black.cpy(),
         localizedName: String = name,
+        color: Color = Color.black.cpy(),
         var item: Item? = null
-    ) : MEItem(name, color, localizedName) {
+    ) : MEItem(name, localizedName, color) {
         override fun loadIcon() {
             super.loadIcon()
             item?.let {
