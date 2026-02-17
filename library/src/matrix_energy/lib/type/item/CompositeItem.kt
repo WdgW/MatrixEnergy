@@ -12,9 +12,12 @@ import mindustry.type.Item
 open class CompositeItem(
     name: String,
     items: Seq<Any>,
-    color: Color = Color.black.cpy(),
-    localizedName: String = name
-) : MEItem(name, color, localizedName), Composite {
+    color: Color = Color.black.cpy()
+) : MEItem(name, color), Composite {
+    constructor(name: String, items: Seq<Any>, localizedName: String,color: Color = Color.black.cpy()): this(name, items, color){
+    this.localizedName = localizedName
+    }
+
     var items: Seq<Item> = Seq<Item>(true, items.size / 2)
     var itemPercentage: FloatSeq = FloatSeq(true, items.size / 2)
     var itemsTotal: Int
