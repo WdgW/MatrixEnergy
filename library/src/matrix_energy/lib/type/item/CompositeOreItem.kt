@@ -6,8 +6,8 @@ import arc.struct.Seq
 open class CompositeOreItem(
     name: String,
     items: Seq<Any>,
-    color: Color = Color.black.cpy(),
-    localizedName: String = name
-) : CompositeItem(name, items, color, localizedName) {
+    localizedName: String = name,
+    color: Color = Color.black.cpy()
+) : CompositeItem(name, items, localizedName, color) {
 
 }
