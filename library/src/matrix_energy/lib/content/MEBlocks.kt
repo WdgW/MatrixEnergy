@@ -19,6 +19,6 @@ object MEBlocks {
             requirements(Category.distribution, ItemStack.with(MEItems.Fe, 100))
 
         }
-        floor0 = Floor("floor0-test")
+        floor0 = Floor("floor0-test", 1)
     }
 }

@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 // build.gradle.kts
 
 // 从 gradle.properties 或命令行参数读取属性
-val kotlinVersion: String = "2.2.20"
+val kotlinVersion: String = "2.3.0"
 val kryoVersion: String = "5.6.0"
 val mindustryVersion: String = "v155"
 val jabelVersion: String = "93fde537c7"
@@ -26,7 +26,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
 //        classpath("com.github.Anuken.Mindustry:core:v155")
     }
 
@@ -72,16 +72,6 @@ allprojects {
     }
 }
 
-//subprojects {
-//    apply(plugin = "java")
-//    apply(plugin = "org.jetbrains.kotlin.jvm")
-//
-//    tasks.withType<JavaCompile>().configureEach {
-//        options.release.set(17)
-//        options.encoding = "UTF-8"
-//    }
-//
-//}
 
 // 配置依赖版本一致性
 configurations.all {
