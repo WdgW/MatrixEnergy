@@ -26,7 +26,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.3.0")
 //        classpath("com.github.Anuken.Mindustry:core:v155")
     }
 
