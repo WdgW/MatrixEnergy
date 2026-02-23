@@ -6,8 +6,9 @@ import matrix_energy.lib.MatrixEnergyInterfaces.PureSubstance
 open class PureSubstanceItem(
     name: String,
     color: Color = Color.black.cpy(),
-    localizedName: String = name
-) : MEItem(name, color, localizedName), PureSubstance {
-
+) : MEItem(name, color), PureSubstance {
+    constructor(name: String, localizedName: String,color: Color = Color.black.cpy()): this(name, color){
+    this.localizedName = localizedName
+    }
 }
 
